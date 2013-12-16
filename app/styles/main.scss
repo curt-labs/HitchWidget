@@ -1,112 +1,91 @@
-@import "base";
+$icon-font-path: "/bower_components/sass-bootstrap/fonts/";
 
-// Demo page styles
-html {
-	background: url("../images/light_wool.png");
+@import 'sass-bootstrap/lib/bootstrap';
 
-	body{
-		padding-top: 25px;
-		max-width: 1020px;
-		margin:auto;
-	}
-
-	body[role=widget]{
-		padding-top: 0;
-		background: #F7F6F5;
-
-		div[role=main] {
-			background: white;
-			box-shadow: 3px 3px 3px #f1f1f1;
-			padding: 100px 10px;
-			max-width: 1000px;
-			margin:auto;
-			border-radius: 0 0 3px 3px;
-		}
-
-		footer{
-			width: 1000px;
-			padding: 10px;
-			margin:auto;
-			min-height: 50px;
-
-			.copy{
-				float:left;
-				span{
-					color: #aeaeae;
-					font-size: 10px;
-					display:block;
-				}
-			}
-
-			img{
-				float:right;
-				width: 140px;
-			}
-		}
-	}
-}
-// End demo styles
-
-
-// Hitch Widget styling
-.widget_container{
-	margin:10px 10px 10px 40px;
-	clear: both;
-
-	.vehicle-info{
-		float: left;
-
-		a {
-			font-size: 14px;
-			color:#343434;
-			margin: 5px 7px;
-			display: inline-block;
-			min-width:80px;
-			padding: 5px 10px;
-			background: rgb(238,238,238);
-			background: rgba(238,238,238, 0.4);
-
-			&:hover{
-				text-decoration: none;
-				background:rgb(238,238,238);
-			}
-		}
-
-		a:after{
-			padding-left:5px;
-			float:right;
-			content: '+';
-		}
-	}
-
-	.select-area{
-		float: left;
-	}
-
-	.clear{
-		display: none;
-	}
-	.curt-vehiclestring{
-		display:block;
-		font-size:16px;
-		color: #aeaeae;
-		margin-bottom: 5px;
-	}
-
-	select{
-		display: block;
-	}
+.browsehappy {
+    margin: 0.2em 0;
+    background: #ccc;
+    color: #000;
+    padding: 0.2em 0;
 }
 
-.widget-results{
-	margin:40px 20px 20px;
+/* Space out content a bit */
+body {
+    padding-top: 90px;
+    padding-bottom: 20px;
 }
 
-@include mobile-only(){
-	body{
-		background:black;
-	}
+/* Everything but the jumbotron gets side spacing for mobile first views */
+.header,
+.marketing,
+.footer {
+    padding-left: 15px;
+    padding-right: 15px;
 }
 
+/* Custom page header */
+.header {
+    border-bottom: 1px solid #e5e5e5;
+}
 
-// End Hitch Widget styles
+/* Make the masthead heading the same height as the navigation */
+.header h3 {
+    margin-top: 0;
+    margin-bottom: 0;
+    line-height: 40px;
+    padding-bottom: 19px;
+}
+
+/* Custom page footer */
+.footer {
+    padding-top: 19px;
+    color: #777;
+    border-top: 1px solid #e5e5e5;
+}
+
+.container-narrow > hr {
+    margin: 30px 0;
+}
+
+/* Main marketing message and sign up button */
+.jumbotron {
+    text-align: center;
+    border-bottom: 1px solid #e5e5e5;
+}
+
+.jumbotron .btn {
+    font-size: 21px;
+    padding: 14px 24px;
+}
+
+/* Supporting marketing content */
+.marketing {
+    margin: 40px 0;
+}
+
+.marketing p + h4 {
+    margin-top: 28px;
+}
+
+/* Responsive: Portrait tablets and up */
+@media screen and (min-width: 768px) {
+    .container {
+        max-width: 730px;
+    }
+
+    /* Remove the padding we set earlier */
+    .header,
+    .marketing,
+    .footer {
+        padding-left: 0;
+        padding-right: 0;
+    }
+    /* Space out the masthead */
+    .header {
+        margin-bottom: 30px;
+    }
+    /* Remove the bottom border on the jumbotron for visual effect */
+    .jumbotron {
+        border-bottom: 0;
+    }
+}
