@@ -1,19 +1,19 @@
 'use strict';
 
-angular.module('widgetApp').controller('MainCtrl', function ($scope, $http, VehicleService, PartService) {
+angular.module('widgetApp').controller('MainCtrl', function ($scope, $http, VehicleFactory, PartFactory) {
     
     $scope.$watch('config.Year', function(newValue, oldValue) {
 		if(newValue === oldValue || newValue === ''){
 			return;
 		}
-		VehicleService.Year = parseFloat(newValue);
-		VehicleService.getMakes(function(makes,parts,err){
+		VehicleFactory.Year = parseFloat(newValue);
+		VehicleFactory.getMakes(function(makes,parts,err){
 			if(err){
 				alertify.error(err);
 				return;
 			}
 			$scope.Makes = makes;
-			PartService.populateParts(parts);
+			PartFactory.populate(parts);
 			$scope.Parts = parts;
 		});
     });
@@ -21,13 +21,14 @@ angular.module('widgetApp').controller('MainCtrl', function ($scope, $http, Vehi
 		if(newValue === oldValue || newValue === ''){
 			return;
 		}
-		VehicleService.Make = newValue;
-		VehicleService.getModels(function(models,parts,err){
+		VehicleFactory.Make = newValue;
+		VehicleFactory.getModels(function(models,parts,err){
 			if(err){
 				alertify.error(err);
 				return;
 			}
 			$scope.Models = models;
+			PartFactory.populate(parts);
 			$scope.Parts = parts;
 		});
     });
@@ -35,13 +36,14 @@ angular.module('widgetApp').controller('MainCtrl', function ($scope, $http, Vehi
 		if(newValue === oldValue || newValue === ''){
 			return;
 		}
-		VehicleService.Model = newValue;
-		VehicleService.getSubmodels(function(subs,parts,err){
+		VehicleFactory.Model = newValue;
+		VehicleFactory.getSubmodels(function(subs,parts,err){
 			if(err){
 				alertify.error(err);
 				return;
 			}
 			$scope.Submodels = subs;
+			PartFactory.populate(parts);
 			$scope.Parts = parts;
 		});
     });
@@ -51,12 +53,14 @@ angular.module('widgetApp').controller('MainCtrl', function ($scope, $http, Vehi
     $scope.Models = [];
     $scope.Submodels = [];
 
-    VehicleService.getYears(function(years, err){
+    VehicleFactory.getYears(function(years, parts, err){
 		if(err){
 			alertify.error(err);
 			return;
 		}
 		$scope.Years = years;
+		PartFactory.populate(parts);
+		$scope.Parts = parts;
     });
 
 
