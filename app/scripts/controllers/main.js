@@ -1,8 +1,8 @@
 'use strict';
 
 angular.module('widgetApp').controller('MainCtrl', function ($scope, $http, VehicleFactory, PartFactory) {
-    
-    $scope.$watch('config.Year', function(newValue, oldValue) {
+
+	$scope.$watch('config.Year', function(newValue, oldValue) {
 		if(newValue === oldValue || newValue === ''){
 			return;
 		}
@@ -13,11 +13,13 @@ angular.module('widgetApp').controller('MainCtrl', function ($scope, $http, Vehi
 				return;
 			}
 			$scope.Makes = makes;
+			$scope.Submodels = $scope.Models = [];
 			PartFactory.populate(parts);
 			$scope.Parts = parts;
 		});
-    });
-    $scope.$watch('config.Make', function(newValue, oldValue) {
+	});
+
+	$scope.$watch('config.Make', function(newValue, oldValue) {
 		if(newValue === oldValue || newValue === ''){
 			return;
 		}
@@ -28,11 +30,12 @@ angular.module('widgetApp').controller('MainCtrl', function ($scope, $http, Vehi
 				return;
 			}
 			$scope.Models = models;
+			$scope.Submodels = [];
 			PartFactory.populate(parts);
 			$scope.Parts = parts;
 		});
-    });
-    $scope.$watch('config.Model', function(newValue, oldValue) {
+	});
+	$scope.$watch('config.Model', function(newValue, oldValue) {
 		if(newValue === oldValue || newValue === ''){
 			return;
 		}
@@ -46,22 +49,23 @@ angular.module('widgetApp').controller('MainCtrl', function ($scope, $http, Vehi
 			PartFactory.populate(parts);
 			$scope.Parts = parts;
 		});
-    });
+	});
 
-    $scope.Years = [];
-    $scope.Makes = [];
-    $scope.Models = [];
-    $scope.Submodels = [];
+	$scope.Years = [];
+	$scope.Makes = [];
+	$scope.Models = [];
+	$scope.Submodels = [];
 
-    VehicleFactory.getYears(function(years, parts, err){
+	VehicleFactory.getYears(function(years, parts, err){
 		if(err){
 			alertify.error(err);
 			return;
 		}
 		$scope.Years = years;
+		$scope.Submodels = $scope.Models = $scope.Makes = [];
 		PartFactory.populate(parts);
 		$scope.Parts = parts;
-    });
+	});
 
 
 });
