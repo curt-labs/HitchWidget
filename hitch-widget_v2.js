@@ -88,7 +88,7 @@ function initWidget(){
 
             // Create function for getting the URL GET data
             jQuery.extend({
-                
+
                 // This function will return all of the GET data inside the 'vars' array
                 getUrlVars: function(){
                     var vars = [], hash;
@@ -112,11 +112,11 @@ function initWidget(){
                     }
                 }
             });
-            
+
             jQuery.fn.sort = function() {
                 return this.pushStack( [].sort.apply( this, arguments ), []);
             };
-            
+
             jQuery('#mount').live('change',function(){
                     mount = jQuery(this).val();
                     jQuery('#configurator label').remove();
@@ -148,7 +148,7 @@ function initWidget(){
                     jQuery('#searchStr').text(str + ' ' + year);
                     jQuery('#clear').show();
             });
-            
+
             jQuery('#make').live('change',function(){
                     make = jQuery(this).val();
                     jQuery('#configurator label').remove();
@@ -163,7 +163,7 @@ function initWidget(){
                     var str = jQuery('#searchStr').text();
                     jQuery('#searchStr').text(str + ' ' + make);
             });
-            
+
             jQuery('#model').live('change',function(){
                     model = jQuery(this).val();
                     jQuery('#configurator label').remove();
@@ -179,11 +179,11 @@ function initWidget(){
                     var str = jQuery('#searchStr').text();
                     jQuery('#searchStr').text(str + ' ' + model);
             });
-            
+
             jQuery('#style').live('change',function(){
               jQuery('#lookup_submit').show();
             });
-            
+
             jQuery('#lookup_submit').live('click',function(){
                 if(jQuery('#style').get().length !== 0 && jQuery('#style').val() != style && jQuery('#style').val().length > 0){
                     jQuery('#hitchResults').html('');
@@ -206,11 +206,11 @@ function initWidget(){
                 }
               return false;
             });
-            
+
             jQuery('#clear').live('click',function(){
               clearWidget();
             });
-            
+
             jQuery('ul.tabs li a').live('click',function(){
                                         jQuery('ul.tabs li a').removeClass('active');
                                         jQuery(this).addClass('active');
@@ -232,7 +232,7 @@ function clearWidget(){
     jQuery('#configurator').append(mountHTML);
     jQuery('label[for=mount]').show();
     jQuery('#mount').show();
-    
+
 }
 
 function sortByClass(a,b){
@@ -243,17 +243,17 @@ function sortByClass(a,b){
  }
 
 function loadConfigurator(){
-    
+
     // Make sure we have a configurator
     if(jQuery('#configurator').length > 0){
         // Display the configurator
         jQuery('#configurator').css('display','block');
-        
+
         // Create  element to store the vehicle string
         cleanHTML = '<span id="searchStr">&nbsp;</span>';
         jQuery('#configurator').append(cleanHTML);
         jQuery('#searchStr').css('display','block');
-        
+
         // Add the mount select box
         mountHTML = '<label for="mount"><select name="mount" id="mount">';
         mountHTML += '<option value="">- Select Mount -</option>';
@@ -268,54 +268,54 @@ function loadConfigurator(){
         yearHTML = '<label for="year"><select name="year" id="year">';
         yearHTML += '<option value="0">- Select Year - </option>';
         yearHTML += '</select></label>';
-        
+
         // Add the make select box
         makeHTML = '<label for="make"><select name="make" id="make">';
         makeHTML += '<option value="0">- Select Make -</option>';
         makeHTML += '</select></label>';
-        
+
         // Add the model select box
         modelHTML = '<label for="model"><select name="model" id="model">';
         modelHTML += '<option value="0">- Select Model -</option>';
         modelHTML += '</select></label>';
-        
+
         // Add the model select box
         styleHTML = '<label for="style"><select name="style" id="style">';
         styleHTML += '<option value="0">- Select Style -</option>';
         styleHTML += '</select></label>';
-        
+
         // We need to create our loading GIF for transition on AJAX calls
         loaderHTML = "<img src='https://labs.curtmfg.com/widget_v2/img/ajax-loader.gif' id='loader' style='display:none' width='208' height='25' />";
         jQuery('#configurator').append(loaderHTML);
-        
+
         // Create our submit button
         // This won't be displayed until the user selects a style
         inputHTML = '<div class="hold"></div><input type="button" id="lookup_submit" name="lookup_submit" value="Find Hitch" />';
         jQuery('#configurator').append(inputHTML);
-        
+
         // Create link to use as a 'Clear' action on the search results and vehicle string
         clearHTML = '<a href="javascript:void(0)" style="display:none;" id="clear">Clear</a>';
         jQuery('#configurator').append(clearHTML);
-        
+
         if(jQuery('#hitchResults').get().length === 0){
             resultHTML = '<div id="hitchResults"></div>';
             jQuery('#configurator').append(resultHTML);
         }
         jQuery('#configurator').after('<div style="clear:both"></div>');
         jQuery('#hitchResults').hide();
-        
+
         // Check if the user has defined a logo and store it if they have
         if(jQuery('#configurator').attr('logo') !== null && jQuery('#configurator').attr('logo') !== ''){
             logoImg = jQuery.trim(jQuery('#configurator').attr('logo'));
         }else{
             logoImg = '';
         }
-        
+
         // Check if we want to display the Buy Now link
         if(jQuery('#configurator').attr('buyNow')){
             buyNow = jQuery('#configurator').attr('buyNow');
             merchant_id = jQuery('#configurator').attr('merchant_id');
-            
+
             // Check which checkout platform we are going to run
             if(!jQuery('#configurator').attr('checkout')){
                 // No checkout platform determined
@@ -330,28 +330,28 @@ function loadConfigurator(){
                 }
             }
         }
-        
+
         // Check if we want to bring wiring results with the hitch
         if(jQuery('#configurator').attr('wiring')){
             if(jQuery('#configurator').attr('wiring') == 'true'){
                 wiring = true;
             }
         }
-        
+
         // Check if we want to bring the accessories of a hitch into the hitch details pane
         if(jQuery('#configurator').attr('accessories')){
             if(jQuery('#configurator').attr('accessories') == 'true'){
                 accessories = true;
             }
         }
-        
+
         // Check if we want to integrate with the customer's cart id's
         if(jQuery('#configurator').attr('integrated')){
             if(jQuery('#configurator').attr('integrated') == 'true'){
                 integrated = true;
             }
         }
-        
+
         // Get the customer id
         if(jQuery('#configurator').attr('customer_id')){
             customer_id = jQuery('#configurator').attr('customer_id');
@@ -361,12 +361,12 @@ function loadConfigurator(){
         if(jQuery('#configurator').attr('customer_email')){
             customer_email = jQuery('#configurator').attr('customer_email');
         }
-        
+
         // Get the path to the users shopping cart
         if(jQuery('#configurator').attr('cart_path')){
             cart_link = jQuery('#configurator').attr('cart_path');
         }
-        
+
         // Handle the image swap from little image to big image
         jQuery('.mini').live('click',function(){
             // Get the clicked images source
@@ -376,53 +376,53 @@ function loadConfigurator(){
             jQuery(this).attr('src',bigSrc);
             jQuery('#mainImage img').attr('src',miniSrc);
         });
-        
+
         // Get our URL variables
         year = jQuery.getUrlVar('year');
         make = jQuery.getUrlVar('make');
         model = jQuery.getUrlVar('model');
         style = jQuery.getUrlVar('style');
         partID = jQuery.getUrlVar('partID');
-        
+
         // Add the tab effects
         jQuery('.tab_content').hide();
         jQuery('ul.tabs li:first').addClass('active').show();
         jQuery('.tab_content:first').show();
-        
+
         // Handle the click event for our tabs
         jQuery('ul.tabs li').live('click',function(){
             jQuery('ul.tabs li').removeClass('active'); // Remove any 'active' class
             jQuery(this).addClass('active'); // Add 'active' class to selected tab
             jQuery('.tab_content').hide(); // Hide all tab content
-            
+
             var activeTab = jQuery(this).find('a').attr('href'); // Find the id of the 'tab_content' that this link is referencing
             jQuery(activeTab).fadeIn(); // Fade in the active ID content
             return false;
         });
-        
+
         jQuery('.hitchTabs').find('a').live('click',function(){
             jQuery(this).parent().parent().find('.hitchTab').removeClass('activeHitchTab');
             jQuery(this).parent().addClass('activeHitchTab');
             var tab = jQuery(this).attr('class');
-            
+
             jQuery(this).parent().parent().next().find('.content').fadeOut();
             jQuery(this).parent().parent().next().find("."+tab+"_content").slideDown();
             return false;
         });
-        
+
         jQuery('.imageTab_content img').live('click',function(){
             var imgSrc = jQuery(this).attr('src');
             imgSrc = imgSrc.replace('300x225','1024x768');
             window.open(imgSrc,'','resizeable=yes;toolbar=no;status=no');
         });
-        
+
         jQuery('.prodImg').live('click',function(){
             var imgSrc = jQuery(this).find('img').attr('src');
             imgSrc = imgSrc.replace('300x225','1024x768');
             window.open(imgSrc,'','resizeable=yes;toolbar=no;status=no');
             return false;
         });
-        
+
         if(partID > 0){
             showPart(partID);
         }else if(year.length > 0 && make.length > 0 && model.length > 0 && style.length > 0){
@@ -441,7 +441,7 @@ function loadConfigurator(){
             };
             jQuery.get('https://api.curtmfg.com/v2/GetParts?callback=loadParts',get_data,function(parts){},'jsonp');
         }
-        
+
         // Now that everything is loaded, we can make the request to the CURT API to track the deployment
         var deplyed_location = window.location.hostname;
         $.get('https://api.curtmfg.com/v2/AddDeployment?url='+deplyed_location,function(){},'jsonp');
@@ -533,7 +533,7 @@ function GetPartsForClass(parts, pClass){
             }
         });
     }
-    
+
     return arr;
 }
 
@@ -543,12 +543,12 @@ function loadParts(parts){
     mount = year = make = model = style = '';
     if(parts !== null && parts.length > 0){
         var resultHTML = "";
-        
+
         // We need to spool out the categories that the products are under.
         parts = jQuery(parts).sort(sortByClass);
         var class_array = [];
         var part_array = [];
-        
+
         // Step through each part and populate an array of the unique product classes
         jQuery.each(parts,function(i,part){
             if(part.shortDesc.toUpperCase().indexOf('T-CONNECTOR',0) == -1 || part.shortDesc.toUpperCase().indexOf('WIRING',0) == -1){
@@ -563,7 +563,7 @@ function loadParts(parts){
                 }
             }
         });
-        
+
         // Print out the different product classes
         if(class_array.length > 0){
             resultHTML += '<ul class="tabs">';
@@ -588,11 +588,11 @@ function loadParts(parts){
                                 resultHTML += '<img src="'+ logoImg +'" alt="Company Logo" />';
                             resultHTML += '</div>';
                         }
-        
+
                         // Print out the number of hitches found
                         resultHTML += '<div style="clear:both"></div>';
                         resultHTML += '<span>( <span id="hitchCount">'+part_array[pClass].length+'</span> ) products found.</span>';
-        
+
                     resultHTML += '</div>';
                 resultHTML += '</div>';
                 resultHTML += '<div style="clear:both"></div>';
@@ -606,14 +606,14 @@ function loadParts(parts){
         resultHTML += '</div>';
         jQuery('#hitchResults').html(resultHTML);
         jQuery('#hitchResults').show();
-        
+
         jQuery('#loader').before(mountHTML);
         jQuery('#mount').show();
         jQuery('#searchStr').text('');
-        
+
         // Fire off a request to find the wiring for this vehicle and load the tab
         displayWiring();
-            
+
     }else{
         vehicleStr.replace('rear','Rear Mount').replace('front', 'Front Mount');
         jQuery('#hitchResults').html('<p id="vehicleStr">No results for ' + vehicleStr + '</p>');
@@ -624,13 +624,13 @@ function loadParts(parts){
     jQuery('#hitchResults').show();
     jQuery('.widget_tab_content:first').show();
     jQuery('ul.tabs li:first a').addClass('active');
-    
+
 }
 
 function loadSingle(part){
     if(part !== null){
         var resultHTML = "";
-        
+
         // Print out the different product classes
         if(part.pClass.length > 0){
             resultHTML += '<ul class="tabs">';
@@ -646,22 +646,22 @@ function loadSingle(part){
         resultHTML += '</div>';
         jQuery('#hitchResults').html(resultHTML);
         jQuery('#hitchResults').show();
-        
+
         jQuery('#loader').before(mountHTML);
         jQuery('#mount').show();
         jQuery('#searchStr').text('');
-        
+
         jQuery('.widget_tab_content:first').show();
         jQuery('ul.tabs li:first a').addClass('active');
-        
+
         // Fire off a request to find the wiring for this vehicle and load the tab
         displayWiring();
-        
+
     }else{
         jQuery('#hitchResults').html('<p id="vehicleStr">No results</p>');
     }
-    
-    
+
+
 }
 
 function displayPart(part){
@@ -673,8 +673,8 @@ function displayPart(part){
             partHTML += "<span class='trademark'>&trade;</span>";
             partHTML += "<span class='hitchTitle'>" + shortDesc + "</span><br />";
         partHTML += "</span>";
-    
-    
+
+
         partHTML += "<p>Part #: <strong>" +part.partID + "</strong></p>";
         partHTML += "<a title='" + part.shortDesc + "' href='https://www.curtmfg.com/masterlibrary/"+ part.partID + "/images/" + part.partID + "_1024x768_a.jpg' class='image prodImg'>";
             partHTML += "<img src='https://www.curtmfg.com/masterlibrary/"+ part.partID + "/images/" + part.partID + "_300x225_a.jpg' onerror='jQuery(this).parent().remove();' />";
@@ -721,7 +721,7 @@ function displayPart(part){
             partHTML += loadCheckout(part.listPrice,part.shortDesc,cust_part, part.partID);
         partHTML += "</div>";
         partHTML += "<div style='clear:both'></div>";
-    
+
         // Begin tabbed architecture
         partHTML += "<div class='hitchTabs'>";
             partHTML += "<div class='hitchTab imageTab activeHitchTab'>";
@@ -761,20 +761,20 @@ function GetAccessories(partID){
     };
     jQuery.get('https://api.curtmfg.com/v2/GetRelatedParts?callback=loadAccessories',get_data,function(){},'jsonp');
 }
-    
+
 // Load the accessories into the part listing
 function loadAccessories(partID, related_parts){
     if(related_parts !== null && related_parts.length > 0 && partID > 0){
         var accHTML = "";
         jQuery.each(related_parts,function(i,acc){
             accHTML += '<div class="accessory">';
-            
+
             // Display Accessory Image
             accHTML += '<div class="imgContainer">';
             accHTML += '<div class="imgBorder">';
             accHTML += '<img onerror="jQuery(this).parent().hide()" src="https://www.curtmfg.com/masterlibrary/'+acc.partID+'/images/'+acc.partID+'_300x225_a.jpg" />';
             accHTML += '</div>';
-            
+
             if(buyNow){
                 var cust_part = 0;
                 if(acc.custPartID !== null){
@@ -783,23 +783,23 @@ function loadAccessories(partID, related_parts){
                 accHTML += loadCheckout(acc.listPrice,acc.shortDesc, cust_part, acc.partID);
             }
             accHTML += '</div>';
-            
+
             // Display Accessory Specs
             accHTML += '<div class="specs">';
             accHTML += '<span style="display:block;font-weight: bold">'+ acc.shortDesc +'</span>';
             accHTML += '<div class="details">';
-            
+
             accHTML += "<ul>";
             jQuery.each(acc.attributes,function(i, attr){
                 accHTML += "<li><strong>"+attr.key+"</strong>: "+attr.value+"</li>";
             });
             accHTML += "</ul>";
-            
+
             accHTML += '<div style="clear:both"></div>';
             accHTML += '</div>';
             accHTML += '<div style="clear:both"></div>';
             accHTML += '</div>';
-            
+
             accHTML += '<div style="clear:both"></div>';
             accHTML += '</div>';
 
@@ -810,8 +810,8 @@ function loadAccessories(partID, related_parts){
         jQuery('.hitchTab_container').find('#'+partID+'_accessories').remove();
     }
 }
-    
-    
+
+
 // Request vehicle information
 function displayWiring(){
     var get_data = {
@@ -839,11 +839,11 @@ function loadVehicleRecord(response){
                             resultHTML += '<img src="'+ logoImg +'" alt="Company Logo" />';
                         resultHTML += '</div>';
                     }
-        
+
                     // Print out the number of hitches found
                     resultHTML += '<div style="clear:both"></div>';
                     resultHTML += '<span>( <span id="hitchCount">'+response.length+'</span> ) hitches found.</span>';
-        
+
                 resultHTML += '</div>';
             resultHTML += '</div>';
             resultHTML += '<div style="clear:both"></div>';
@@ -980,6 +980,12 @@ function loadCheckout(price,title, custPartID, partID){
             checkoutHTML += '/\')"><span><span>Add to Cart</span></span>';
             checkoutHTML += '</button>';
             break;
+        case 'rackwarehouse':
+      		checkoutHTML += '<span class="price">'+price+'</span><br />';
+          checkoutHTML += '<a href="http://fitguides.rackwarehouse.com/yahoo/FitGuideCart.aspx?p1='+partID+',1" title="Buy Now">';
+          checkoutHTML += '<img src="https://labs.curtmfg.com/widget_v2/img/checkout.png" alt="checkout" />';
+          checkoutHTML += '</a><br />';
+          break;
         case 'custom':
             if(cart_link.length > 0){
                 checkoutHTML += '<span class="price">'+price+'</span><br />';
