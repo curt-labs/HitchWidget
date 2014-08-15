@@ -511,13 +511,13 @@ function loadCurtStyles(styles){
     jQuery('#style').show();
 }
 
-/*
+/**
  * This function will take in the parts JSON object and a string depicting the class we want to retrieve parts for.
  *
  * @param parts - JSON object
  * @param class - string
  * returns Array()
- */
+ **/
 function GetPartsForClass(parts, pClass){
     var arr = [];
     if(pClass != 'Other'){
