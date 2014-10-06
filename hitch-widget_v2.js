@@ -46,18 +46,31 @@ function init(){
     if(document.createStyleSheet) {
         /* Get the declared stylesheet */
 
-        // Make sure we have a style attribute
-        declaredStyle = document.getElementById('configurator').getAttribute('lookupStyle');
-        declaredStyle = (declaredStyle === null)?'default':declaredStyle;
-        document.createStyleSheet('https://labs.curtmfg.com/widget_v2/css/'+ declaredStyle +'.css');
+        var dataStyle = document.getElementById('configurator').getAttribute('data-lookupStyle');
+        if (dataStyle !== ''){
+        	// Make sure we have a style attribute
+	        declaredStyle = dataStyle
+	        document.createStyleSheet('https://labs.curtmfg.com/widget_v2/css/'+ dataStyle +'.css');
+        }else{
+        	// Make sure we have a style attribute
+	        declaredStyle = document.getElementById('configurator').getAttribute('lookupStyle');
+	        declaredStyle = (declaredStyle === null)?'default':declaredStyle;
+	        document.createStyleSheet('https://labs.curtmfg.com/widget_v2/css/'+ declaredStyle +'.css');
+        }
 
     }else{
 
         /* Get the declared stylesheet */
 
-        // Make sure we have a style attribute
-        declaredStyle = document.getElementById('configurator').getAttribute('lookupStyle');
-        declaredStyle = (declaredStyle === null)?'default':declaredStyle;
+        var dataStyle = document.getElementById('configurator').getAttribute('data-lookupStyle');
+        if (dataStyle !== ''){
+        	// Make sure we have a style attribute
+	        declaredStyle = dataStyle
+        }else{
+        	// Make sure we have a style attribute
+	        declaredStyle = document.getElementById('configurator').getAttribute('lookupStyle');
+	        declaredStyle = (declaredStyle === null)?'default':declaredStyle;
+        }
 
 
         // Load configurator stylesheet
@@ -323,17 +336,30 @@ function loadConfigurator(){
                 merchant_id = 0;
             }else{
                 checkout = jQuery('#configurator').attr('checkout');
-                if(checkout.toLowerCase() == 'google'){
-                    // Load the Google mutli-item checkout script
-                    //var checkout_script = "<script  id='googlecart-script' type='text/javascript' src='https://checkout.google.com/seller/gsc/v2_2/cart.js?mid="+merchant_id+"' integration='jscart-wizard' post-cart-to-sandbox='false' currency='USD'></script>";
-                    //jQuery('#configurator').after(checkout_script);
-                }
+            }
+        }
+        if(jQuery('#configurator').data('buynow')){
+            buyNow = jQuery('#configurator').data('buynow');
+            merchant_id = jQuery('#configurator').data('merchant_id');
+
+            // Check which checkout platform we are going to run
+            if(!jQuery('#configurator').data('checkout')){
+                // No checkout platform determined
+                buyNow = false;
+                merchant_id = 0;
+            }else{
+                checkout = jQuery('#configurator').data('checkout');
             }
         }
 
         // Check if we want to bring wiring results with the hitch
         if(jQuery('#configurator').attr('wiring')){
             if(jQuery('#configurator').attr('wiring') == 'true'){
+                wiring = true;
+            }
+        }
+        if(jQuery('#configurator').data('wiring')){
+            if(jQuery('#configurator').data('wiring') == 'true'){
                 wiring = true;
             }
         }
@@ -344,10 +370,20 @@ function loadConfigurator(){
                 accessories = true;
             }
         }
+        if(jQuery('#configurator').data('accessories')){
+            if(jQuery('#configurator').data('accessories') == 'true'){
+                accessories = true;
+            }
+        }
 
         // Check if we want to integrate with the customer's cart id's
         if(jQuery('#configurator').attr('integrated')){
             if(jQuery('#configurator').attr('integrated') == 'true'){
+                integrated = true;
+            }
+        }
+        if(jQuery('#configurator').data('integrated')){
+            if(jQuery('#configurator').data('integrated') == 'true'){
                 integrated = true;
             }
         }
@@ -356,15 +392,24 @@ function loadConfigurator(){
         if(jQuery('#configurator').attr('customer_id')){
             customer_id = jQuery('#configurator').attr('customer_id');
         }
+        if(jQuery('#configurator').data('customer_id')){
+            customer_id = jQuery('#configurator').data('customer_id');
+        }
 
         // Get the customer name
         if(jQuery('#configurator').attr('customer_email')){
             customer_email = jQuery('#configurator').attr('customer_email');
         }
+        if(jQuery('#configurator').data('customer_email')){
+            customer_email = jQuery('#configurator').data('customer_email');
+        }
 
         // Get the path to the users shopping cart
         if(jQuery('#configurator').attr('cart_path')){
             cart_link = jQuery('#configurator').attr('cart_path');
+        }
+        if(jQuery('#configurator').data('cart_path')){
+            cart_link = jQuery('#configurator').data('cart_path');
         }
 
         // Handle the image swap from little image to big image
