@@ -553,6 +553,15 @@ background: linear-gradient(top,  rgb(13,13,13) 0%,rgb(44,46,43) 100%); /* W3C *
     vertical-align: top;
 }
 
+#configurator .stock{
+    font-size: 12pt;
+    color: #515050;
+    margin-right: 10px;
+    margin-bottom:5px;
+    line-height: 25px;
+    vertical-align: top;
+}
+
 #configurator form label{
     font-weight: bold;
     line-height: 25px;

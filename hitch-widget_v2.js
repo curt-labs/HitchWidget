@@ -238,14 +238,15 @@ function initWidget(){
 }
 
 function clearWidget(){
-		jQuery('#hitchResults').html('');
-		jQuery('#searchStr').text('');
-		jQuery('#clear').hide();
-		jQuery('#configurator').find('label').remove();
-		jQuery('#configurator').append(mountHTML);
-		jQuery('label[for=mount]').show();
-		jQuery('#mount').show();
-
+	jQuery('#hitchResults').html('').hide();
+	jQuery('#searchStr').text('');
+	jQuery('#clear').hide();
+	jQuery('#configurator').find('label').remove();
+	jQuery('#configurator').append(mountHTML);
+	jQuery('label[for=mount]').show();
+	jQuery('#mount').show();
+	jQuery('#loader').before(mountHTML);
+	jQuery('#lookup_submit').hide();
 }
 
 function sortByClass(a,b){
@@ -1031,9 +1032,15 @@ function loadCheckout(price,title, custPartID, partID){
 					checkoutHTML += '<img src="https://labs.curtmfg.com/widget_v2/img/checkout.png" alt="checkout" />';
 					checkoutHTML += '</a><br />';
 					break;
+				case 'easternmarine':
+					checkoutHTML += '<span class="stock">Stock #'+custPartID+'</span>';
+					checkoutHTML += '<span class="price">'+price+'</span><br />';
+					checkoutHTML += '<a href="http://www.easternmarine.com/checkout/cart/add?qty=1&product='+custPartID+'" title="Add to Cart" class="form-button">Add to Cart</a><br />';
+					checkoutHTML += '</a><br />';
+					break;
 				case 'custom':
 						if(cart_link.length > 0){
-								checkoutHTML += '<span class="price">'+price+'</span><br />';
+								checkoutHTML += '<span class="stock">'+price+'</span><br />';
 								checkoutHTML += '<a href="'+cart_link.replace('[part_id]',custPartID)+'" title="Buy Now">';
 								checkoutHTML += '<img src="https://labs.curtmfg.com/widget_v2/img/checkout.png" alt="checkout" />';
 								checkoutHTML += '</a><br />';
