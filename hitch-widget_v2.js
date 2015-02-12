@@ -490,7 +490,7 @@ function loadConfigurator(){
 
 				// Now that everything is loaded, we can make the request to the CURT API to track the deployment
 				var deplyed_location = window.location.hostname;
-				$.get('https://api.curtmfg.com/v2/AddDeployment?url='+deplyed_location,function(){},'jsonp');
+				jQuery.get('https://api.curtmfg.com/v2/AddDeployment?url='+deplyed_location,function(){},'jsonp');
 		}
 }
 
@@ -1033,9 +1033,9 @@ function loadCheckout(price,title, custPartID, partID){
 					checkoutHTML += '</a><br />';
 					break;
 				case 'easternmarine':
-					checkoutHTML += '<span class="stock">Stock #'+custPartID+'</span>';
+					checkoutHTML += '<span class="stock">Stock #'+custPartID+'CM</span>';
 					checkoutHTML += '<span class="price">'+price+'</span><br />';
-					checkoutHTML += '<a href="http://www.easternmarine.com/checkout/cart/add?qty=1&product='+custPartID+'" title="Add to Cart" class="form-button">Add to Cart</a><br />';
+					checkoutHTML += '<a href="'+cart_link.replace('[part_id]',custPartID)+'" title="Add to Cart" class="form-button">Add to Cart</a><br />';
 					checkoutHTML += '</a><br />';
 					break;
 				case 'custom':
