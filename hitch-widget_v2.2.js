@@ -198,7 +198,8 @@ function initWidget(){
 							clearWidget();
 						});
 
-						jQuery(document).on('click','ul.tabs li a',function(){
+						jQuery(document).on('click','ul.tabs li a',function(e){
+							e.preventDefault();
 							jQuery('ul.tabs li a').removeClass('active');
 							jQuery(this).addClass('active');
 							jQuery('.widget_tab_content').hide();
