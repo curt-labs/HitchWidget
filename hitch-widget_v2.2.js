@@ -1,4 +1,4 @@
-var REQUIRED_JQUERY = 1.6;
+var REQUIRED_JQUERY = 1.9;
 var STORAGE = true,
 		USER_AGENT = navigator.userAgent.toLowerCase(),
 		clearHTML,
@@ -82,6 +82,7 @@ function init(){
 				document.getElementsByTagName("head")[0].appendChild(newSS);
 
 		}
+		loadConfigurator();
 }
 
 function initWidget(){
@@ -99,38 +100,11 @@ function initWidget(){
 				//jQuery.noConflict();
 				if(!widget_loaded){
 
-						// Create function for getting the URL GET data
-						jQuery.extend({
-
-								// This function will return all of the GET data inside the 'vars' array
-								getUrlVars: function(){
-										var vars = [], hash;
-										var hashes = window.location.href.slice(window.location.href.indexOf('?') + 1).split('&');
-										jQuery.each(hashes,function(i, hash){
-												hash = hashes[i].split('=');
-												vars.push(hash[0]);
-												vars[hash[0]] = hash[1];
-										});
-										return vars;
-								},
-
-								// This function will return the GET variable declared in the 'name' variable
-								// @param : GET variable name to be retrieved
-								getUrlVar: function(name){
-										var hashes = jQuery.getUrlVars();
-										if(hashes !== undefined && hashes[name] !== undefined){
-												return hashes[name];
-										}else{
-												return '';
-										}
-								}
-						});
-
 						jQuery.fn.sort = function() {
 								return this.pushStack( [].sort.apply( this, arguments ), []);
 						};
 
-						jQuery('#mount').live('change',function(){
+						jQuery(document).on('change','#mount',function(){
 										mount = jQuery(this).val();
 										jQuery('#configurator label').remove();
 										jQuery('#loader').show();
@@ -147,7 +121,7 @@ function initWidget(){
 										jQuery('#clear').show();
 						});
 
-						jQuery('label[for=year] #year').live('change',function(){
+						jQuery(document).on('change','label[for=year] #year',function(){
 										year = jQuery(this).val();
 										jQuery('#configurator label').remove();
 										jQuery('#loader').show();
@@ -162,7 +136,7 @@ function initWidget(){
 										jQuery('#clear').show();
 						});
 
-						jQuery('#make').live('change',function(){
+						jQuery(document).on('change','#make',function(){
 										make = jQuery(this).val();
 										jQuery('#configurator label').remove();
 										jQuery('#loader').show();
@@ -177,7 +151,7 @@ function initWidget(){
 										jQuery('#searchStr').text(str + ' ' + make);
 						});
 
-						jQuery('#model').live('change',function(){
+						jQuery(document).on('change','#model',function(){
 										model = jQuery(this).val();
 										jQuery('#configurator label').remove();
 										jQuery('#loader').show();
@@ -193,11 +167,11 @@ function initWidget(){
 										jQuery('#searchStr').text(str + ' ' + model);
 						});
 
-						jQuery('#style').live('change',function(){
+						jQuery(document).on('change','#style',function(){
 							jQuery('#lookup_submit').show();
 						});
 
-						jQuery('#lookup_submit').live('click',function(){
+						jQuery(document).on('click','#lookup_submit',function(){
 								if(jQuery('#style').get().length !== 0 && jQuery('#style').val() != style && jQuery('#style').val().length > 0){
 										jQuery('#hitchResults').html('');
 										jQuery(this).hide();
@@ -220,19 +194,19 @@ function initWidget(){
 							return false;
 						});
 
-						jQuery('#clear').live('click',function(){
+						jQuery(document).on('click','#clear',function(){
 							clearWidget();
 						});
 
-						jQuery('ul.tabs li a').live('click',function(){
-																				jQuery('ul.tabs li a').removeClass('active');
-																				jQuery(this).addClass('active');
-																				jQuery('.widget_tab_content').hide();
-																				var part_class = jQuery(this).attr('title');
-																				jQuery('#'+part_class).show();
+						jQuery(document).on('click','ul.tabs li a',function(){
+							jQuery('ul.tabs li a').removeClass('active');
+							jQuery(this).addClass('active');
+							jQuery('.widget_tab_content').hide();
+							var part_class = jQuery(this).attr('title');
+							jQuery('#'+part_class).show();
 						});
 						widget_loaded = true;
-						loadConfigurator();
+						// loadConfigurator();
 				}
 		}
 }
@@ -258,6 +232,33 @@ function sortByClass(a,b){
 
 function loadConfigurator(){
 
+		// Create function for getting the URL GET data
+		jQuery.extend({
+
+				// This function will return all of the GET data inside the 'vars' array
+				getUrlVars: function(){
+						var vars = [], hash;
+						var hashes = window.location.href.slice(window.location.href.indexOf('?') + 1).split('&');
+						jQuery.each(hashes,function(i, hash){
+								hash = hashes[i].split('=');
+								vars.push(hash[0]);
+								vars[hash[0]] = hash[1];
+						});
+						return vars;
+				},
+
+				// This function will return the GET variable declared in the 'name' variable
+				// @param : GET variable name to be retrieved
+				getUrlVar: function(name){
+						var hashes = jQuery.getUrlVars();
+						if(hashes !== undefined && hashes[name] !== undefined){
+								return hashes[name];
+						}else{
+								return '';
+						}
+				}
+		});
+
 		// Make sure we have a configurator
 		if(jQuery('#configurator').length > 0){
 				// Display the configurator
@@ -276,7 +277,7 @@ function loadConfigurator(){
 				mountHTML += '</select></label>';
 
 				jQuery('#configurator').append(mountHTML);
-				jQuery('#mount').css('display','block');
+				jQuery('#configurator #mount').css('display','block');
 
 				// Add the year select box
 				yearHTML = '<label for="year"><select name="year" id="year">';
@@ -316,7 +317,7 @@ function loadConfigurator(){
 						jQuery('#configurator').append(resultHTML);
 				}
 				jQuery('#configurator').after('<div style="clear:both"></div>');
-				jQuery('#hitchResults').hide();
+				jQuery('#configurator #hitchResults').hide();
 
 				// Check if the user has defined a logo and store it if they have
 				if(jQuery('#configurator').attr('logo') !== null && jQuery('#configurator').attr('logo') !== ''){
@@ -414,7 +415,7 @@ function loadConfigurator(){
 				}
 
 				// Handle the image swap from little image to big image
-				jQuery('.mini').live('click',function(){
+				jQuery(document).on('#configurator .mini','click',function(){
 						// Get the clicked images source
 						var miniSrc = jQuery(this).attr('src');
 						// Get the big images source
@@ -431,22 +432,22 @@ function loadConfigurator(){
 				partID = jQuery.getUrlVar('partID');
 
 				// Add the tab effects
-				jQuery('.tab_content').hide();
-				jQuery('ul.tabs li:first').addClass('active').show();
-				jQuery('.tab_content:first').show();
+				jQuery('#configurator .tab_content').hide();
+				jQuery('#configurator ul.tabs li:first').addClass('active').show();
+				jQuery('#configurator .tab_content:first').show();
 
 				// Handle the click event for our tabs
-				jQuery('ul.tabs li').live('click',function(){
-						jQuery('ul.tabs li').removeClass('active'); // Remove any 'active' class
+				jQuery(document).on('#configurator ul.tabs li','click',function(){
+						jQuery('#configurator ul.tabs li').removeClass('active'); // Remove any 'active' class
 						jQuery(this).addClass('active'); // Add 'active' class to selected tab
-						jQuery('.tab_content').hide(); // Hide all tab content
+						jQuery('#configurator .tab_content').hide(); // Hide all tab content
 
 						var activeTab = jQuery(this).find('a').attr('href'); // Find the id of the 'tab_content' that this link is referencing
 						jQuery(activeTab).fadeIn(); // Fade in the active ID content
 						return false;
 				});
 
-				jQuery('.hitchTabs').find('a').live('click',function(){
+				jQuery(document).on('#configurator .hitchTabs a','click',function(){
 						jQuery(this).parent().parent().find('.hitchTab').removeClass('activeHitchTab');
 						jQuery(this).parent().addClass('activeHitchTab');
 						var tab = jQuery(this).attr('class');
@@ -456,13 +457,13 @@ function loadConfigurator(){
 						return false;
 				});
 
-				jQuery('.imageTab_content img').live('click',function(){
+				jQuery(document).on('#configurator .imageTab_content img','click',function(){
 						var imgSrc = jQuery(this).attr('src');
 						imgSrc = imgSrc.replace('300x225','1024x768');
 						window.open(imgSrc,'','resizeable=yes;toolbar=no;status=no');
 				});
 
-				jQuery('.prodImg').live('click',function(){
+				jQuery(document).on('#configurator .prodImg','click',function(){
 						var imgSrc = jQuery(this).find('img').attr('src');
 						imgSrc = imgSrc.replace('300x225','1024x768');
 						window.open(imgSrc,'','resizeable=yes;toolbar=no;status=no');
@@ -522,39 +523,39 @@ function showPart(partID){
 }
 
 function loadYears(years){
-		jQuery('#loader').after(yearHTML);
+		jQuery('#configurator #loader').after(yearHTML);
 		jQuery.each(years,function(i,year){
-				jQuery('#year').append('<option>'+year+'</option>');
+				jQuery('#configurator label[for=year] #year').append('<option>'+year+'</option>');
 		});
-		jQuery('#loader').hide();
-		jQuery('#year').show();
+		jQuery('#configurator #loader').hide();
+		jQuery('#configurator label[for=year] #year').show();
 }
 
 function loadMakes(makes){
-		jQuery('#loader').after(makeHTML);
+		jQuery('#configurator #loader').after(makeHTML);
 		jQuery.each(makes,function(i,make){
-				jQuery('#make').append('<option>'+make+'</option>');
+				jQuery('#configurator #make').append('<option>'+make+'</option>');
 		});
-		jQuery('#loader').hide();
-		jQuery('#make').show();
+		jQuery('#configurator #loader').hide();
+		jQuery('#configurator label[for=make] #make').show();
 }
 
 function loadModels(models){
-		jQuery('#loader').after(modelHTML);
+		jQuery('#configurator #loader').after(modelHTML);
 		jQuery.each(models,function(i,model){
-				jQuery('#model').append('<option>'+model+'</option>');
+				jQuery('#configurator #model').append('<option>'+model+'</option>');
 		});
-		jQuery('#loader').hide();
-		jQuery('#model').show();
+		jQuery('#configurator #loader').hide();
+		jQuery('#configurator label[for=model] #model').show();
 }
 
 function loadCurtStyles(styles){
-		jQuery('#loader').after(styleHTML);
+		jQuery('#configurator #loader').after(styleHTML);
 		jQuery.each(styles,function(i,style){
-				jQuery('#style').append('<option>'+style+'</option>');
+				jQuery('#configurator #style').append('<option>'+style+'</option>');
 		});
-		jQuery('#loader').hide();
-		jQuery('#style').show();
+		jQuery('#configurator #loader').hide();
+		jQuery('#configurator #style').show();
 }
 
 /**
@@ -653,9 +654,9 @@ function loadParts(parts){
 				jQuery('#hitchResults').html(resultHTML);
 				jQuery('#hitchResults').show();
 
-				jQuery('#loader').before(mountHTML);
-				jQuery('#mount').show();
-				jQuery('#searchStr').text('');
+				jQuery('#configurator #loader').before(mountHTML);
+				jQuery('#configurator #mount').show();
+				jQuery('#configurator #searchStr').text('');
 
 				// Fire off a request to find the wiring for this vehicle and load the tab
 				displayWiring();
