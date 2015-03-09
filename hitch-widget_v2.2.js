@@ -619,7 +619,7 @@ function loadParts(parts){
 								if(pClass !== undefined && pClass.length > 0){
 										part_array[pClass] = GetPartsForClass(parts,pClass);
 										resultHTML += '<li>';
-												resultHTML += '<a href="class'+i+'_content" title="'+pClass.replace(/ /g,'')+'">'+pClass+'</a>';
+												resultHTML += '<a href="#class'+i+'_content" title="'+pClass.replace(/ /g,'')+'">'+pClass+'</a>';
 										resultHTML += '</li>';
 								}
 						});
@@ -683,7 +683,7 @@ function loadSingle(part){
 				if(part.pClass.length > 0){
 						resultHTML += '<ul class="tabs">';
 								resultHTML += '<li>';
-										resultHTML += '<a href="class1_content" title="'+part.pClass.replace(/ /g,'')+'">'+part.pClass+'</a>';
+										resultHTML += '<a href="#class1_content" title="'+part.pClass.replace(/ /g,'')+'">'+part.pClass+'</a>';
 								resultHTML += '</li>';
 						resultHTML += '</ul>';
 				}
@@ -775,7 +775,7 @@ function displayPart(part){
 						partHTML += "<div class='hitchTab imageTab activeHitchTab'>";
 								partHTML += "<a href='"+window.location.href+"' class='imageTab' id='"+part.partID+"'>Images</a>";
 						partHTML += "</div>";
-						if(part.relatedCount > 0){
+						if(part.relatedCount > 0 && accessories){
 								partHTML += "<div class='hitchTab accTab'>";
 										partHTML += "<a href='"+window.location.href+"' class='accTab' id='"+ part.partID +"_accessories'>Accessories</a>";
 								partHTML += "</div>";
@@ -788,7 +788,7 @@ function displayPart(part){
 								partHTML += "<img src='https://www.curtmfg.com/masterlibrary/"+part.partID+"/images/"+part.partID+"_300x225_d.jpg' onerror='jQuery(this).remove()' />";
 								partHTML += "<img src='https://www.curtmfg.com/masterlibrary/"+part.partID+"/images/"+part.partID+"_300x225_e.jpg' onerror='jQuery(this).remove()' />";
 						partHTML += "</div>";
-						if(part.relatedCount > 0){
+						if(part.relatedCount > 0 && accessories){
 								partHTML += "<div class='accTab_content content' id='"+part.partID+"_accessories'>";
 								GetAccessories(part.partID);
 								partHTML += "</div>";
