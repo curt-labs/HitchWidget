@@ -958,8 +958,17 @@ function loadCheckout(price,title, custPartID, partID){
 						}else{
 								return_url += '?partID=' + partID;
 						}
+						if(cart_link === ''){
+							cart_link = '/addtocart.aspx?returnurl='+return_url;
+						}else{
+							if(cart_link.indexOf('?') != -1){
+								cart_link += '&returnurl=' + return_url;
+							}else{
+								cart_link += '?returnurl=' + return_url;
+							}
+						}
 						checkoutHTML += '<span class="price"><span>Price:</span>'+ price + '</span>';
-						checkoutHTML += '<form class="nuera" method="post" action="/addtocart.aspx?returnurl=' + return_url + '">';
+						checkoutHTML += '<form class="nuera" method="post" action="' + cart_link + '">';
 						checkoutHTML += '<input name="VariantStyle" id="VariantStyle" type="hidden" value="0" />';
 						checkoutHTML += '<input name="IsWishList" id="IsWishList" type="hidden" value="0" />';
 						checkoutHTML += '<input name="IsGiftRegistry" id="IsGiftRegistry" type="hidden" value="0" />';
