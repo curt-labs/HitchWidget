@@ -731,8 +731,14 @@ function displayPart(part){
 								partHTML += "<span><strong>"+part.pClass+"</strong></span><br />";
 								partHTML += "<span><strong>Install Time:</strong> "+part.installTime+" minutes</span><br />";
 								partHTML += "<img src='https://labs.curtmfg.com/widget_v2/img/file_pdf.png' />";
-								partHTML += "<a target='_blank' href='https://www.curtmfg.com/masterlibrary/"+part.partID+"/installsheet/CM_"+part.partID+"_INS.pdf'>";
-										partHTML += "Instruction Sheet "+part.partID;
+
+								if(part.pClass == "Wiring"){
+									partHTML += "<a target='_blank' href='https://www.curtmfg.com/masterlibrary/"+part.partID+"/installsheet/CME_"+part.partID+"_INS.pdf'>";
+								}else{
+									partHTML += "<a target='_blank' href='https://www.curtmfg.com/masterlibrary/"+part.partID+"/installsheet/CM_"+part.partID+"_INS.pdf'>";
+								}
+								
+								partHTML += "Instruction Sheet "+part.partID;
 								partHTML += "</a>";
 								if(part.attributes.length > 0){
 										partHTML += "<table class='attribute_table'>";
