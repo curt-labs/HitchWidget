@@ -814,6 +814,16 @@ function GetAccessories(partID){
 		jQuery.get('https://api.curtmfg.com/v2/GetRelatedParts?callback=loadAccessories',get_data,function(){},'jsonp');
 }
 
+function nueraFunction(value, data) {
+	var valid = parseFloat(value) > 0;
+	        if(valid) {
+	        	console.log(data + 'qty/' + value + '/');
+	            setLocation(data + 'qty/' + value + '/');
+	        } else {
+	        alert("Please enter a number for the quantity.");
+	        }
+}
+
 // Load the accessories into the part listing
 function loadAccessories(partID, related_parts){
 		if(related_parts !== null && related_parts.length > 0 && partID > 0){
@@ -973,19 +983,29 @@ function loadCheckout(price,title, custPartID, partID){
 								cart_link += '?returnurl=' + return_url;
 							}
 						}
+
+						var dataURL = 'http://www.nueratrailerparts.com.etemps.info/checkout/cart/add/uenc/aHR0cDovL3d3dy5udWVyYXRyYWlsZXJwYXJ0cy5jb20uZXRlbXBzLmluZm8vdHJhaWxlci1mZW5kZXJzL3BsYXN0aWMtdHJhaWxlci1mZW5kZXJzLmh0bWw,/product/' + custPartID + '/form_key/BOGkCjtJeXb9FrWb/';
+
 						checkoutHTML += '<span class="price"><span>Price:</span>'+ price + '</span>';
-						checkoutHTML += '<form class="nuera" method="post" action="' + cart_link + '">';
-						checkoutHTML += '<input name="VariantStyle" id="VariantStyle" type="hidden" value="0" />';
-						checkoutHTML += '<input name="IsWishList" id="IsWishList" type="hidden" value="0" />';
-						checkoutHTML += '<input name="IsGiftRegistry" id="IsGiftRegistry" type="hidden" value="0" />';
-						checkoutHTML += '<input name="UpsellProducts" id="UpsellProducts" type="hidden" value="" />';
-						checkoutHTML += '<input name="CartRecID" id="CartRecID" type="hidden" value="0" />';
-						checkoutHTML += '<input name="ProductID" id="ProductID" type="hidden" value="' + custPartID + '" />';
-						checkoutHTML += '<input name="VariantID" id="VariantID" type="hidden" value="0" />';
-						checkoutHTML += '<small>Quantity:</small>';
-						checkoutHTML += '<input name="Quantity" id="Quantity" type="text" value="1" size="3" maxlength="4" />';
-						checkoutHTML += '<input type="submit" value="Add to Cart" />';
+						checkoutHTML += '<form class="qty-block" action="http://www.nueratrailerparts.com.etemps.info/checkout/cart/add/uenc/aHR0cDovL3d3dy5udWVyYXRyYWlsZXJwYXJ0cy5jb20uZXRlbXBzLmluZm8vdHJhaWxlci1mZW5kZXJzL3BsYXN0aWMtdHJhaWxlci1mZW5kZXJzLmh0bWw,/product/' + custPartID + '/form_key/BOGkCjtJeXb9FrWb/" method="post" id="product_addtocart_form_' + custPartID +'">';
+						checkoutHTML += '<label for="qty1">Quantity:</label>';
+						checkoutHTML += '<input type="text" name="qty" id="qty_' + custPartID +'" maxlength="12" value="1" title="Qty" class="input-text required-entry validate-greater-than-zero">';
+						checkoutHTML += '<button type="button" data-url="http://www.nueratrailerparts.com.etemps.info/checkout/cart/add/uenc/aHR0cDovL3d3dy5udWVyYXRyYWlsZXJwYXJ0cy5jb20uZXRlbXBzLmluZm8vdHJhaWxlci1mZW5kZXJzL3BsYXN0aWMtdHJhaWxlci1mZW5kZXJzLmh0bWw,/product/' + custPartID + '/form_key/BOGkCjtJeXb9FrWb/" id="' + custPartID +'" title="Add to Cart" class="button button-alt" onclick="nueraFunction($(' + "'qty_" + custPartID + "'" + ').getValue(), ' + "this.getAttribute('data-url')" +');"><span><span>Add to Cart</span></span></button>';
 						checkoutHTML += '</form>';
+
+						// checkoutHTML += '<span class="price"><span>Price:</span>'+ price + '</span>';
+						// checkoutHTML += '<form class="nuera" method="post" action="' + cart_link + '">';
+						// checkoutHTML += '<input name="VariantStyle" id="VariantStyle" type="hidden" value="0" />';
+						// checkoutHTML += '<input name="IsWishList" id="IsWishList" type="hidden" value="0" />';
+						// checkoutHTML += '<input name="IsGiftRegistry" id="IsGiftRegistry" type="hidden" value="0" />';
+						// checkoutHTML += '<input name="UpsellProducts" id="UpsellProducts" type="hidden" value="" />';
+						// checkoutHTML += '<input name="CartRecID" id="CartRecID" type="hidden" value="0" />';
+						// checkoutHTML += '<input name="ProductID" id="ProductID" type="hidden" value="' + custPartID + '" />';
+						// checkoutHTML += '<input name="VariantID" id="VariantID" type="hidden" value="0" />';
+						// checkoutHTML += '<small>Quantity:</small>';
+						// checkoutHTML += '<input name="Quantity" id="Quantity" type="text" value="1" size="3" maxlength="4" />';
+						// checkoutHTML += '<input type="submit" value="Add to Cart" />';
+						// checkoutHTML += '</form>';
 
 						break;
 
