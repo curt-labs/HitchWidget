@@ -817,7 +817,6 @@ function GetAccessories(partID){
 function nueraFunction(value, data) {
 	var valid = parseFloat(value) > 0;
 	        if(valid) {
-	        	console.log(data + 'qty/' + value + '/');
 	            setLocation(data + 'qty/' + value + '/');
 	        } else {
 	        alert("Please enter a number for the quantity.");
