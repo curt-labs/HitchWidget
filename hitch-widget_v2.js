@@ -966,7 +966,7 @@ function loadCheckout(price,title, custPartID, partID){
 								checkoutHTML += '</a><br />';
 						}
 						break;
-				case 'nuera':
+				case 'nueraV2':
 						var return_url = window.location.pathname;
 						if(return_url.indexOf('?') != -1){
 								return_url += '&partID=' + partID;
@@ -1007,7 +1007,37 @@ function loadCheckout(price,title, custPartID, partID){
 						// checkoutHTML += '</form>';
 
 						break;
+				case 'nuera':
+						var return_url = window.location.pathname;
+						if(return_url.indexOf('?') != -1){
+								return_url += '&partID=' + partID;
+						}else{
+								return_url += '?partID=' + partID;
+						}
+						if(cart_link === ''){
+							cart_link = '/addtocart.aspx?returnurl='+return_url;
+						}else{
+							if(cart_link.indexOf('?') != -1){
+								cart_link += '&returnurl=' + return_url;
+							}else{
+								cart_link += '?returnurl=' + return_url;
+							}
+						}
+						checkoutHTML += '<span class="price"><span>Price:</span>'+ price + '</span>';
+						checkoutHTML += '<form class="nuera" method="post" action="' + cart_link + '">';
+						checkoutHTML += '<input name="VariantStyle" id="VariantStyle" type="hidden" value="0" />';
+						checkoutHTML += '<input name="IsWishList" id="IsWishList" type="hidden" value="0" />';
+						checkoutHTML += '<input name="IsGiftRegistry" id="IsGiftRegistry" type="hidden" value="0" />';
+						checkoutHTML += '<input name="UpsellProducts" id="UpsellProducts" type="hidden" value="" />';
+						checkoutHTML += '<input name="CartRecID" id="CartRecID" type="hidden" value="0" />';
+						checkoutHTML += '<input name="ProductID" id="ProductID" type="hidden" value="' + custPartID + '" />';
+						checkoutHTML += '<input name="VariantID" id="VariantID" type="hidden" value="0" />';
+						checkoutHTML += '<small>Quantity:</small>';
+						checkoutHTML += '<input name="Quantity" id="Quantity" type="text" value="1" size="3" maxlength="4" />';
+						checkoutHTML += '<input type="submit" value="Add to Cart" />';
+						checkoutHTML += '</form>';
 
+						break;
 				case 'fasttrackracks':
 								checkoutHTML += '<form action="http://www.fasttrackracks.com/store/addtocart.aspx" method="post">';
 										checkoutHTML += '<div style="padding-top:15px"><span class="price accPrice">'+price+'</span>';
@@ -1030,7 +1060,6 @@ function loadCheckout(price,title, custPartID, partID){
 										checkoutHTML += '<input type="submit" name="submit" class="fasttrackracks_button" value="Buy Now" />';
 										checkoutHTML += '</form>';
 						break;
-
 				case 'stowaway2':
 								checkoutHTML += '<form action="http://www.stowaway2.com/store/addtocart.aspx" method="post">';
 										checkoutHTML += '<div style="padding-top:15px"><span class="price accPrice">'+price+'</span>';
