@@ -817,6 +817,7 @@ function GetAccessories(partID){
 function nueraFunction(value, data) {
 	var valid = parseFloat(value) > 0;
 	        if(valid) {
+	        	console.log(data + 'qty/' + value + '/');
 	            setLocation(data + 'qty/' + value + '/');
 	        } else {
 	        alert("Please enter a number for the quantity.");
@@ -967,44 +968,17 @@ function loadCheckout(price,title, custPartID, partID){
 						}
 						break;
 				case 'nueraV2':
-						var return_url = window.location.pathname;
-						if(return_url.indexOf('?') != -1){
-								return_url += '&partID=' + partID;
-						}else{
-								return_url += '?partID=' + partID;
-						}
-						if(cart_link === ''){
-							cart_link = '/addtocart.aspx?returnurl='+return_url;
-						}else{
-							if(cart_link.indexOf('?') != -1){
-								cart_link += '&returnurl=' + return_url;
-							}else{
-								cart_link += '?returnurl=' + return_url;
-							}
-						}
 
-						var dataURL = 'http://www.nueratrailerparts.com.etemps.info/checkout/cart/add/uenc/aHR0cDovL3d3dy5udWVyYXRyYWlsZXJwYXJ0cy5jb20uZXRlbXBzLmluZm8vdHJhaWxlci1mZW5kZXJzL3BsYXN0aWMtdHJhaWxlci1mZW5kZXJzLmh0bWw,/product/' + custPartID + '/form_key/BOGkCjtJeXb9FrWb/';
+						var formKey = '9FZBdUmC65NBbGVo'; // This will be replaced with getting a value from an attribute on the configuratior
+
+						var dataURL = 'http://www.nueratrailerparts.com.etemps.info/checkout/cart/add/product/' + custPartID + '/form_key/' + formKey + '/';
 
 						checkoutHTML += '<span class="price"><span>Price:</span>'+ price + '</span>';
-						checkoutHTML += '<form class="qty-block" action="http://www.nueratrailerparts.com.etemps.info/checkout/cart/add/uenc/aHR0cDovL3d3dy5udWVyYXRyYWlsZXJwYXJ0cy5jb20uZXRlbXBzLmluZm8vdHJhaWxlci1mZW5kZXJzL3BsYXN0aWMtdHJhaWxlci1mZW5kZXJzLmh0bWw,/product/' + custPartID + '/form_key/BOGkCjtJeXb9FrWb/" method="post" id="product_addtocart_form_' + custPartID +'">';
+						checkoutHTML += '<form class="qty-block" action="' + dataURL + '" method="post" id="product_addtocart_form_' + custPartID +'">';
 						checkoutHTML += '<label for="qty1">Quantity:</label>';
 						checkoutHTML += '<input type="text" name="qty" id="qty_' + custPartID +'" maxlength="12" value="1" title="Qty" class="input-text required-entry validate-greater-than-zero">';
-						checkoutHTML += '<button type="button" data-url="http://www.nueratrailerparts.com.etemps.info/checkout/cart/add/uenc/aHR0cDovL3d3dy5udWVyYXRyYWlsZXJwYXJ0cy5jb20uZXRlbXBzLmluZm8vdHJhaWxlci1mZW5kZXJzL3BsYXN0aWMtdHJhaWxlci1mZW5kZXJzLmh0bWw,/product/' + custPartID + '/form_key/BOGkCjtJeXb9FrWb/" id="' + custPartID +'" title="Add to Cart" class="button button-alt" onclick="nueraFunction($(' + "'qty_" + custPartID + "'" + ').getValue(), ' + "this.getAttribute('data-url')" +');"><span><span>Add to Cart</span></span></button>';
+						checkoutHTML += '<button type="button" data-url="' + dataURL + '" id="' + custPartID +'" title="Add to Cart" class="button button-alt" onclick="nueraFunction($(' + "'qty_" + custPartID + "'" + ').getValue(), ' + "this.getAttribute('data-url')" +');"><span><span>Add to Cart</span></span></button>';
 						checkoutHTML += '</form>';
-
-						// checkoutHTML += '<span class="price"><span>Price:</span>'+ price + '</span>';
-						// checkoutHTML += '<form class="nuera" method="post" action="' + cart_link + '">';
-						// checkoutHTML += '<input name="VariantStyle" id="VariantStyle" type="hidden" value="0" />';
-						// checkoutHTML += '<input name="IsWishList" id="IsWishList" type="hidden" value="0" />';
-						// checkoutHTML += '<input name="IsGiftRegistry" id="IsGiftRegistry" type="hidden" value="0" />';
-						// checkoutHTML += '<input name="UpsellProducts" id="UpsellProducts" type="hidden" value="" />';
-						// checkoutHTML += '<input name="CartRecID" id="CartRecID" type="hidden" value="0" />';
-						// checkoutHTML += '<input name="ProductID" id="ProductID" type="hidden" value="' + custPartID + '" />';
-						// checkoutHTML += '<input name="VariantID" id="VariantID" type="hidden" value="0" />';
-						// checkoutHTML += '<small>Quantity:</small>';
-						// checkoutHTML += '<input name="Quantity" id="Quantity" type="text" value="1" size="3" maxlength="4" />';
-						// checkoutHTML += '<input type="submit" value="Add to Cart" />';
-						// checkoutHTML += '</form>';
 
 						break;
 				case 'nuera':
