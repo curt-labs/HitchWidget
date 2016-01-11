@@ -817,6 +817,7 @@ function GetAccessories(partID){
 function nueraFunction(value, data) {
 	var valid = parseFloat(value) > 0;
 	        if(valid) {
+	        	console.log(data + 'qty/' + value + '/');
 	            setLocation(data + 'qty/' + value + '/');
 	        } else {
 	        alert("Please enter a number for the quantity.");
@@ -967,8 +968,7 @@ function loadCheckout(price,title, custPartID, partID){
 						}
 						break;
 				case 'nueraV2':
-
-						var formKey = '9FZBdUmC65NBbGVo'; // This will be replaced with getting a value from an attribute on the configuratior
+						var formKey = document.getElementById('configurator').getAttribute('magento-key')
 
 						var dataURL = 'http://www.nueratrailerparts.com.etemps.info/checkout/cart/add/product/' + custPartID + '/form_key/' + formKey + '/';
 
