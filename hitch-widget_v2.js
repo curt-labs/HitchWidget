@@ -762,7 +762,7 @@ function displayPart(part){
 	var content_values = [];
 	jQuery.each(part.content,function(i, content_item){
 		if(jQuery.inArray(content_item.value,content_values) == -1){
-			if(content_item.key != 'installationSheet'){
+			if(content_item.key != 'installationSheet' && content_item.key !== 'MarketingDescription'){
 				partHTML += "<p class='content_piece'>"+content_item.value+"</p>";
 				content_values[i + 1] = content_item.value;
 			}
