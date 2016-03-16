@@ -1,4 +1,4 @@
-/* 
+/*
  Document   : configurator
  Created on : Oct 14, 2010, 11:57:53 AM
  Author     : Aninneman
@@ -165,7 +165,7 @@
 }
 
 #configurator .longDesc .hitchSpecs p{
-    
+
 }
 
 #configurator .longDesc .hitchSpecs a{
@@ -184,7 +184,7 @@
     background: #2c2e2d;
     background: -webkit-gradient(linear, 0% 0%, 0% 100%, from(#0d0d0d), to(#2c2e2b));
     background: -moz-linear-gradient(top, #0d0d0d, #2c2e2b);
-    
+
     border: 2px outset #343434;
     border-radius: 3px 3px 3px;
     -webkit-box-shadow: 0 0 4px #343434;
@@ -304,9 +304,9 @@
     background: #e6e6e6;
     background: -webkit-gradient(linear, 0% 0%, 0% 100%, from(#999), to(#ccc));
     background: -moz-linear-gradient(top, #ccc, #999);
-    
+
     color: #343434;
-    
+
     border-bottom: 0px;
     height: 29px;
 }
@@ -331,7 +331,7 @@
     background: #999;
     background: -webkit-gradient(linear, 0% 0%, 0% 100%, from(#999), to(#ccc));
     background: -moz-linear-gradient(top, #999, #ccc);
-    
+
     padding: 5px;
     border: 1px solid #white;
     border-radius: 10px 10px;
@@ -430,7 +430,7 @@ background: linear-gradient(top,  rgb(13,13,13) 0%,rgb(44,46,43) 100%); /* W3C *
 
 #configurator .hitchTab_container .wiringTab_content, .hitchTab_container .accTab_content, .hitchTab_container .imageTab_content{
     display: none;
-    overflow: auto;
+    overflow: auto !important;
     max-height: 400px;
 }
 
@@ -474,12 +474,12 @@ background: linear-gradient(top,  rgb(13,13,13) 0%,rgb(44,46,43) 100%); /* W3C *
     border-radius: 5px 5px 5px;
     -moz-border-radius: 5px 5px 5px;
     -o-border-radius: 5px 5px 5px;
-    
+
     box-shadow: #999 2px 2px 2px;
     -webkit-box-shadow: #999 2px 2px 2px;
     -moz-box-shadow: #999 2px 2px 2px;
     -o-box-shadow: #999 2px 2px 2px;
-    
+
     height: 125px;
     width: 80%;
     padding: 5px;
