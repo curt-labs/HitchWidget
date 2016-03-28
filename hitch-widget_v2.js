@@ -1075,6 +1075,7 @@ function loadCheckout(price,title, custPartID, partID){
 			checkoutHTML += '</select>';
 			checkoutHTML += '</div>';
 			checkoutHTML += '<input type="hidden" name="id_product" value="' + custPartID + '">';
+			checkoutHTML += '<input type="hidden" name="add" value="1">';
 			checkoutHTML += '<button type="submit" class="exclusive" name="Submit"><span>Add to cart</span></button>';
 			checkoutHTML += '</form>';
 			break;
