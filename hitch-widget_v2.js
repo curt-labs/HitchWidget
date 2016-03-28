@@ -379,12 +379,12 @@ function loadConfigurator(){
 
 		// Check if we want to integrate with the customer's cart id's
 		if(jQuery('#configurator').attr('integrated')){
-			if(jQuery('#configurator').attr('integrated') === true){
+			if(jQuery('#configurator').attr('integrated') === 'true'){
 				integrated = true;
 			}
 		}
 		if(jQuery('#configurator').data('integrated')){
-			if(jQuery('#configurator').data('integrated') === true){
+			if(jQuery('#configurator').data('integrated') === 'true'){
 				integrated = true;
 			}
 		}
@@ -597,7 +597,6 @@ function loadParts(parts){
 
 		// Step through each part and populate an array of the unique product classes
 		jQuery.each(parts,function(i,part){
-			console.log(integrated, part.custPartID);
 			if (integrated && part.custPartID == 0) {
 				return;
 			}
@@ -668,6 +667,9 @@ function loadParts(parts){
 	}else{
 		vehicleStr.replace('rear','Rear Mount').replace('front', 'Front Mount');
 		jQuery('#hitchResults').html('<p id="vehicleStr">No results for ' + vehicleStr + '</p>');
+		jQuery('#loader').before(mountHTML);
+		jQuery('#mount').show();
+		jQuery('#searchStr').text('');
 	}
 
 
@@ -927,23 +929,99 @@ function loadCheckout(price,title, custPartID, partID){
 	var checkoutHTML = '';
 	switch(checkout){
 		case 'google':
-		if(merchant_id > 0){
-			checkoutHTML += '<span class="price">'+price+'</span><br />';
-			checkoutHTML += '<div class="product">';
-			checkoutHTML += '<input type="hidden" class="product-title" value="'+title.replace('""',' inch').replace('"','')+'">';
-			checkoutHTML += '<input type="hidden" class="product-price" value="'+price+'">';
-			checkoutHTML += '<div class="googlecart-add-button" tabindex="0" role="button" title="Add to cart"></div>';
-			checkoutHTML += '</div>';
-		}
-		break;
+			if(merchant_id > 0){
+				checkoutHTML += '<span class="price">'+price+'</span><br />';
+				checkoutHTML += '<div class="product">';
+				checkoutHTML += '<input type="hidden" class="product-title" value="'+title.replace('""',' inch').replace('"','')+'">';
+				checkoutHTML += '<input type="hidden" class="product-price" value="'+price+'">';
+				checkoutHTML += '<div class="googlecart-add-button" tabindex="0" role="button" title="Add to cart"></div>';
+				checkoutHTML += '</div>';
+			}
+			break;
 
 		// Load Paypal
 		case 'paypal':
-		if(merchant_id){
-			checkoutHTML += '<form target="_blank" action="https://www.paypal.com/cgi-bin/webscr" method="post">';
-			checkoutHTML += '<div style="padding-top: 15px"><span class="price accPrice">'+ price +'</span><br />';
+			if(merchant_id){
+				checkoutHTML += '<form target="_blank" action="https://www.paypal.com/cgi-bin/webscr" method="post">';
+				checkoutHTML += '<div style="padding-top: 15px"><span class="price accPrice">'+ price +'</span><br />';
+				checkoutHTML += '<label>Qty</label>';
+				checkoutHTML += '<select name="quantity" style="min-width:40px;display:inline">';
+				checkoutHTML += '<option>1</option>';
+				checkoutHTML += '<option>2</option>';
+				checkoutHTML += '<option>3</option>';
+				checkoutHTML += '<option>4</option>';
+				checkoutHTML += '<option>5</option>';
+				checkoutHTML += '</select>';
+				checkoutHTML += '</div>';
+				checkoutHTML += '<input type="hidden" name="item_number" value="'+title.replace('""',' inch').replace('"','')+'" />';
+				checkoutHTML += '<input type="hidden" name="cmd" value="_xclick" />';
+				checkoutHTML += '<input type="hidden" name="no_note" value="1" />';
+				checkoutHTML += '<input type="hidden" name="business" value="' + customer_email + '" />';
+				checkoutHTML += '<input type="hidden" name="currency_code" value="USD" />';
+				checkoutHTML += '<input type="hidden" name="return" value="'+window.location.href+'" />';
+				checkoutHTML += '<input type="hidden" name="item_name" value="'+title.replace('""',' inch').replace('"','')+'" />';
+				checkoutHTML += '<input type="hidden" name="amount" value="'+ price +'" />';
+				checkoutHTML += '<input type="image" name="submit" src="https://www.paypal.com/en_US/i/btn/btn_xpressCheckout.gif" border="0" align="top" alt="Check out with PayPal" />';
+				checkoutHTML += '</form>';
+			}
+			break;
+		case 'american_rv':
+			if(custPartID > 0){
+				checkoutHTML += '<span class="price">'+price+'</span><br />';
+				checkoutHTML += '<a href="https://www.americanrvcompany.com/add_cart.asp?quick=1&amp;item_id='+custPartID+'" title="Buy Now">';
+				checkoutHTML += '<img src="https://labs.curtmfg.com/widget_v2/img/checkout.png" alt="Checkout" />';
+				checkoutHTML += '</a><br />';
+			}
+			break;
+		case 'nueraV2':
+			var formKey = document.getElementById('configurator').getAttribute('magento-key')
+
+			var dataURL = 'http://www.nueratrailerparts.com.etemps.info/checkout/cart/add/product/' + custPartID + '/form_key/' + formKey + '/';
+
+			checkoutHTML += '<span class="price"><span>Price:</span>'+ price + '</span>';
+			checkoutHTML += '<form class="qty-block" action="' + dataURL + '" method="post" id="product_addtocart_form_' + custPartID +'">';
+			checkoutHTML += '<label for="qty1">Quantity:</label>';
+			checkoutHTML += '<input type="text" name="qty" id="qty_' + custPartID +'" maxlength="12" value="1" title="Qty" class="input-text required-entry validate-greater-than-zero">';
+			checkoutHTML += '<button type="button" data-url="' + dataURL + '" id="' + custPartID +'" title="Add to Cart" class="button button-alt" onclick="nueraFunction($(' + "'qty_" + custPartID + "'" + ').getValue(), ' + "this.getAttribute('data-url')" +');"><span><span>Add to Cart</span></span></button>';
+			checkoutHTML += '</form>';
+
+			break;
+		case 'nuera':
+			var return_url = window.location.pathname;
+			if(return_url.indexOf('?') != -1){
+				return_url += '&partID=' + partID;
+			}else{
+				return_url += '?partID=' + partID;
+			}
+			if(cart_link === ''){
+				cart_link = '/addtocart.aspx?returnurl='+return_url;
+			}else{
+				if(cart_link.indexOf('?') != -1){
+					cart_link += '&returnurl=' + return_url;
+				}else{
+					cart_link += '?returnurl=' + return_url;
+				}
+			}
+			checkoutHTML += '<span class="price"><span>Price:</span>'+ price + '</span>';
+			checkoutHTML += '<form class="nuera" method="post" action="' + cart_link + '">';
+			checkoutHTML += '<input name="VariantStyle" id="VariantStyle" type="hidden" value="0" />';
+			checkoutHTML += '<input name="IsWishList" id="IsWishList" type="hidden" value="0" />';
+			checkoutHTML += '<input name="IsGiftRegistry" id="IsGiftRegistry" type="hidden" value="0" />';
+			checkoutHTML += '<input name="UpsellProducts" id="UpsellProducts" type="hidden" value="" />';
+			checkoutHTML += '<input name="CartRecID" id="CartRecID" type="hidden" value="0" />';
+			checkoutHTML += '<input name="ProductID" id="ProductID" type="hidden" value="' + custPartID + '" />';
+			checkoutHTML += '<input name="VariantID" id="VariantID" type="hidden" value="0" />';
+			checkoutHTML += '<small>Quantity:</small>';
+			checkoutHTML += '<input name="Quantity" id="Quantity" type="text" value="1" size="3" maxlength="4" />';
+			checkoutHTML += '<input type="submit" value="Add to Cart" />';
+			checkoutHTML += '</form>';
+
+			break;
+		case 'fasttrackracks':
+			checkoutHTML += '<form action="http://www.fasttrackracks.com/store/addtocart.aspx" method="post">';
+			checkoutHTML += '<div style="padding-top:15px"><span class="price accPrice">'+price+'</span>';
 			checkoutHTML += '<label>Qty</label>';
-			checkoutHTML += '<select name="quantity" style="min-width:40px;display:inline">';
+			checkoutHTML += '<select name="qty" style="min-width:40px;display:inline">';
 			checkoutHTML += '<option>1</option>';
 			checkoutHTML += '<option>2</option>';
 			checkoutHTML += '<option>3</option>';
@@ -951,145 +1029,86 @@ function loadCheckout(price,title, custPartID, partID){
 			checkoutHTML += '<option>5</option>';
 			checkoutHTML += '</select>';
 			checkoutHTML += '</div>';
-			checkoutHTML += '<input type="hidden" name="item_number" value="'+title.replace('""',' inch').replace('"','')+'" />';
-			checkoutHTML += '<input type="hidden" name="cmd" value="_xclick" />';
-			checkoutHTML += '<input type="hidden" name="no_note" value="1" />';
-			checkoutHTML += '<input type="hidden" name="business" value="' + customer_email + '" />';
-			checkoutHTML += '<input type="hidden" name="currency_code" value="USD" />';
-			checkoutHTML += '<input type="hidden" name="return" value="'+window.location.href+'" />';
-			checkoutHTML += '<input type="hidden" name="item_name" value="'+title.replace('""',' inch').replace('"','')+'" />';
-			checkoutHTML += '<input type="hidden" name="amount" value="'+ price +'" />';
-			checkoutHTML += '<input type="image" name="submit" src="https://www.paypal.com/en_US/i/btn/btn_xpressCheckout.gif" border="0" align="top" alt="Check out with PayPal" />';
+			checkoutHTML += '<input type="hidden" name="return" value="'+window.location+'" />';
+			checkoutHTML += '<input type="hidden" name="imageurl" value="https://www.curtmfg.com/masterlibrary/'+partID+'/images/'+partID+'_300x225_a.jpg" />';
+			checkoutHTML += '<input type="hidden" name="ItemNbr" value="'+title+'" />';
+			checkoutHTML += '<input type="hidden" name="product" value="'+vehicleStr + ' ' + title +'" />';
+			checkoutHTML += '<input type="hidden" name="notax" value="null" />';
+			checkoutHTML += '<input type="hidden" name="price" value="'+price+'" />';
+			checkoutHTML += '<input type="hidden" name="weight" value="null" />';
+			checkoutHTML += '<input type="submit" name="submit" class="fasttrackracks_button" value="Buy Now" />';
 			checkoutHTML += '</form>';
-		}
-		break;
-		case 'american_rv':
-		if(custPartID > 0){
-			checkoutHTML += '<span class="price">'+price+'</span><br />';
-			checkoutHTML += '<a href="https://www.americanrvcompany.com/add_cart.asp?quick=1&amp;item_id='+custPartID+'" title="Buy Now">';
-			checkoutHTML += '<img src="https://labs.curtmfg.com/widget_v2/img/checkout.png" alt="Checkout" />';
-			checkoutHTML += '</a><br />';
-		}
-		break;
-		case 'nueraV2':
-		var formKey = document.getElementById('configurator').getAttribute('magento-key')
-
-		var dataURL = 'http://www.nueratrailerparts.com.etemps.info/checkout/cart/add/product/' + custPartID + '/form_key/' + formKey + '/';
-
-		checkoutHTML += '<span class="price"><span>Price:</span>'+ price + '</span>';
-		checkoutHTML += '<form class="qty-block" action="' + dataURL + '" method="post" id="product_addtocart_form_' + custPartID +'">';
-		checkoutHTML += '<label for="qty1">Quantity:</label>';
-		checkoutHTML += '<input type="text" name="qty" id="qty_' + custPartID +'" maxlength="12" value="1" title="Qty" class="input-text required-entry validate-greater-than-zero">';
-		checkoutHTML += '<button type="button" data-url="' + dataURL + '" id="' + custPartID +'" title="Add to Cart" class="button button-alt" onclick="nueraFunction($(' + "'qty_" + custPartID + "'" + ').getValue(), ' + "this.getAttribute('data-url')" +');"><span><span>Add to Cart</span></span></button>';
-		checkoutHTML += '</form>';
-
-		break;
-		case 'nuera':
-		var return_url = window.location.pathname;
-		if(return_url.indexOf('?') != -1){
-			return_url += '&partID=' + partID;
-		}else{
-			return_url += '?partID=' + partID;
-		}
-		if(cart_link === ''){
-			cart_link = '/addtocart.aspx?returnurl='+return_url;
-		}else{
-			if(cart_link.indexOf('?') != -1){
-				cart_link += '&returnurl=' + return_url;
-			}else{
-				cart_link += '?returnurl=' + return_url;
-			}
-		}
-		checkoutHTML += '<span class="price"><span>Price:</span>'+ price + '</span>';
-		checkoutHTML += '<form class="nuera" method="post" action="' + cart_link + '">';
-		checkoutHTML += '<input name="VariantStyle" id="VariantStyle" type="hidden" value="0" />';
-		checkoutHTML += '<input name="IsWishList" id="IsWishList" type="hidden" value="0" />';
-		checkoutHTML += '<input name="IsGiftRegistry" id="IsGiftRegistry" type="hidden" value="0" />';
-		checkoutHTML += '<input name="UpsellProducts" id="UpsellProducts" type="hidden" value="" />';
-		checkoutHTML += '<input name="CartRecID" id="CartRecID" type="hidden" value="0" />';
-		checkoutHTML += '<input name="ProductID" id="ProductID" type="hidden" value="' + custPartID + '" />';
-		checkoutHTML += '<input name="VariantID" id="VariantID" type="hidden" value="0" />';
-		checkoutHTML += '<small>Quantity:</small>';
-		checkoutHTML += '<input name="Quantity" id="Quantity" type="text" value="1" size="3" maxlength="4" />';
-		checkoutHTML += '<input type="submit" value="Add to Cart" />';
-		checkoutHTML += '</form>';
-
-		break;
-		case 'fasttrackracks':
-		checkoutHTML += '<form action="http://www.fasttrackracks.com/store/addtocart.aspx" method="post">';
-		checkoutHTML += '<div style="padding-top:15px"><span class="price accPrice">'+price+'</span>';
-		checkoutHTML += '<label>Qty</label>';
-		checkoutHTML += '<select name="qty" style="min-width:40px;display:inline">';
-		checkoutHTML += '<option>1</option>';
-		checkoutHTML += '<option>2</option>';
-		checkoutHTML += '<option>3</option>';
-		checkoutHTML += '<option>4</option>';
-		checkoutHTML += '<option>5</option>';
-		checkoutHTML += '</select>';
-		checkoutHTML += '</div>';
-		checkoutHTML += '<input type="hidden" name="return" value="'+window.location+'" />';
-		checkoutHTML += '<input type="hidden" name="imageurl" value="https://www.curtmfg.com/masterlibrary/'+partID+'/images/'+partID+'_300x225_a.jpg" />';
-		checkoutHTML += '<input type="hidden" name="ItemNbr" value="'+title+'" />';
-		checkoutHTML += '<input type="hidden" name="product" value="'+vehicleStr + ' ' + title +'" />';
-		checkoutHTML += '<input type="hidden" name="notax" value="null" />';
-		checkoutHTML += '<input type="hidden" name="price" value="'+price+'" />';
-		checkoutHTML += '<input type="hidden" name="weight" value="null" />';
-		checkoutHTML += '<input type="submit" name="submit" class="fasttrackracks_button" value="Buy Now" />';
-		checkoutHTML += '</form>';
-		break;
+			break;
 		case 'stowaway2':
-		checkoutHTML += '<form action="http://www.stowaway2.com/store/addtocart.aspx" method="post">';
-		checkoutHTML += '<div style="padding-top:15px"><span class="price accPrice">'+price+'</span>';
-		checkoutHTML += '<label>Qty</label>';
-		checkoutHTML += '<select name="qty" style="min-width:40px;display:inline">';
-		checkoutHTML += '<option>1</option>';
-		checkoutHTML += '<option>2</option>';
-		checkoutHTML += '<option>3</option>';
-		checkoutHTML += '<option>4</option>';
-		checkoutHTML += '<option>5</option>';
-		checkoutHTML += '</select>';
-		checkoutHTML += '</div>';
-		checkoutHTML += '<input type="hidden" name="return" value="'+window.location+'" />';
-		checkoutHTML += '<input type="hidden" name="imageurl" value="https://www.curtmfg.com/masterlibrary/'+partID+'/images/'+partID+'_300x225_a.jpg" />';
-		checkoutHTML += '<input type="hidden" name="ItemNbr" value="'+title+'" />';
-		checkoutHTML += '<input type="hidden" name="product" value="'+vehicleStr + ' ' + title +'" />';
-		checkoutHTML += '<input type="hidden" name="notax" value="null" />';
-		checkoutHTML += '<input type="hidden" name="price" value="'+price+'" />';
-		checkoutHTML += '<input type="hidden" name="weight" value="null" />';
-		checkoutHTML += '<input type="submit" name="submit" class="fasttrackracks_button" value="Buy Now" />';
-		checkoutHTML += '</form>';
-		break;
+			checkoutHTML += '<form action="http://www.stowaway2.com/store/addtocart.aspx" method="post">';
+			checkoutHTML += '<div style="padding-top:15px"><span class="price accPrice">'+price+'</span>';
+			checkoutHTML += '<label>Qty</label>';
+			checkoutHTML += '<select name="qty" style="min-width:40px;display:inline">';
+			checkoutHTML += '<option>1</option>';
+			checkoutHTML += '<option>2</option>';
+			checkoutHTML += '<option>3</option>';
+			checkoutHTML += '<option>4</option>';
+			checkoutHTML += '<option>5</option>';
+			checkoutHTML += '</select>';
+			checkoutHTML += '</div>';
+			checkoutHTML += '<input type="hidden" name="return" value="'+window.location+'" />';
+			checkoutHTML += '<input type="hidden" name="imageurl" value="https://www.curtmfg.com/masterlibrary/'+partID+'/images/'+partID+'_300x225_a.jpg" />';
+			checkoutHTML += '<input type="hidden" name="ItemNbr" value="'+title+'" />';
+			checkoutHTML += '<input type="hidden" name="product" value="'+vehicleStr + ' ' + title +'" />';
+			checkoutHTML += '<input type="hidden" name="notax" value="null" />';
+			checkoutHTML += '<input type="hidden" name="price" value="'+price+'" />';
+			checkoutHTML += '<input type="hidden" name="weight" value="null" />';
+			checkoutHTML += '<input type="submit" name="submit" class="fasttrackracks_button" value="Buy Now" />';
+			checkoutHTML += '</form>';
+			break;
+
+		case 'bestrvparts':
+			checkoutHTML += '<form action="http://www.bestrvparts.com/cart" method="post" class="box-info-product">';
+			checkoutHTML += '<div style="padding-top:15px"><span class="price accPrice">'+price+'</span>';
+			checkoutHTML += '<label>Qty</label>';
+			checkoutHTML += '<select name="qty" style="min-width:40px;display:inline">';
+			checkoutHTML += '<option>1</option>';
+			checkoutHTML += '<option>2</option>';
+			checkoutHTML += '<option>3</option>';
+			checkoutHTML += '<option>4</option>';
+			checkoutHTML += '<option>5</option>';
+			checkoutHTML += '</select>';
+			checkoutHTML += '</div>';
+			checkoutHTML += '<input type="hidden" name="id_product" value="' + custPartID + '">';
+			checkoutHTML += '<button type="submit" class="exclusive" name="Submit"><span>Add to cart</span></button>';
+			checkoutHTML += '</form>';
+			break;
 		case 'trailerhitches2go':
-		checkoutHTML += '<span class="price">' + price + '</span>';
-		checkoutHTML += '<button type="button" title="Add to Cart" class="button btn-cart" onclick="setLocation(';
-		checkoutHTML += "'http://www.trailerhitches2go.com/mag/index.php/checkout/cart/add/uenc/aHR0cDovL3d3dy50cmFpbGVyaGl0Y2hlczJnby5jb20vbWFnL2VsZWN0cmljYWwvdC1jb25uZWN0b3JzLmh0bWw,/product/" + custPartID;
-		checkoutHTML += '/\')"><span><span>Add to Cart</span></span>';
-		checkoutHTML += '</button>';
-		break;
+			checkoutHTML += '<span class="price">' + price + '</span>';
+			checkoutHTML += '<button type="button" title="Add to Cart" class="button btn-cart" onclick="setLocation(';
+			checkoutHTML += "'http://www.trailerhitches2go.com/mag/index.php/checkout/cart/add/uenc/aHR0cDovL3d3dy50cmFpbGVyaGl0Y2hlczJnby5jb20vbWFnL2VsZWN0cmljYWwvdC1jb25uZWN0b3JzLmh0bWw,/product/" + custPartID;
+			checkoutHTML += '/\')"><span><span>Add to Cart</span></span>';
+			checkoutHTML += '</button>';
+			break;
 		case 'rackwarehouse':
-		checkoutHTML += '<span class="price">'+price+'</span><br />';
-		checkoutHTML += '<a href="http://fitguides.rackwarehouse.com/yahoo/FitGuideCart.aspx?p1='+partID+',1" title="Buy Now">';
-		checkoutHTML += '<img src="https://labs.curtmfg.com/widget_v2/img/checkout.png" alt="checkout" />';
-		checkoutHTML += '</a><br />';
-		break;
+			checkoutHTML += '<span class="price">'+price+'</span><br />';
+			checkoutHTML += '<a href="http://fitguides.rackwarehouse.com/yahoo/FitGuideCart.aspx?p1='+partID+',1" title="Buy Now">';
+			checkoutHTML += '<img src="https://labs.curtmfg.com/widget_v2/img/checkout.png" alt="checkout" />';
+			checkoutHTML += '</a><br />';
+			break;
 		case 'easternmarine':
-		checkoutHTML += '<span class="stock">Stock #'+custPartID+'CM</span>';
-		checkoutHTML += '<span class="price">'+price+'</span><br />';
-		checkoutHTML += '<a href="'+cart_link.replace('[part_id]',custPartID)+'" title="Add to Cart" class="form-button">Add to Cart</a><br />';
-		checkoutHTML += '</a><br />';
-		break;
+			checkoutHTML += '<span class="stock">Stock #'+custPartID+'CM</span>';
+			checkoutHTML += '<span class="price">'+price+'</span><br />';
+			checkoutHTML += '<a href="'+cart_link.replace('[part_id]',custPartID)+'" title="Add to Cart" class="form-button">Add to Cart</a><br />';
+			checkoutHTML += '</a><br />';
+			break;
 		case 'custom':
-		if(cart_link.length > 0){
-			checkoutHTML += '<span class="stock">'+price+'</span><br />';
-			checkoutHTML += '<a href="'+cart_link.replace('[part_id]',custPartID)+'" title="Buy Now">';
-			checkoutHTML += '<img src="https://labs.curtmfg.com/widget_v2/img/checkout.png" alt="checkout" />';
-			checkoutHTML += '</a><br />';
-		}else{
-			checkoutHTML += '<a href="javascript:void()" title="Buy Now" class="tiretown" id="'+custPartID+'">';
-			checkoutHTML += '<img src="https://labs.curtmfg.com/widget_v2/img/checkout.png" alt="checkout" />';
-			checkoutHTML += '</a><br />';
-		}
-		break;
+			if(cart_link.length > 0){
+				checkoutHTML += '<span class="stock">'+price+'</span><br />';
+				checkoutHTML += '<a href="'+cart_link.replace('[part_id]',custPartID)+'" title="Buy Now">';
+				checkoutHTML += '<img src="https://labs.curtmfg.com/widget_v2/img/checkout.png" alt="checkout" />';
+				checkoutHTML += '</a><br />';
+			}else{
+				checkoutHTML += '<a href="javascript:void()" title="Buy Now" class="tiretown" id="'+custPartID+'">';
+				checkoutHTML += '<img src="https://labs.curtmfg.com/widget_v2/img/checkout.png" alt="checkout" />';
+				checkoutHTML += '</a><br />';
+			}
+			break;
 	}
 	return checkoutHTML;
 }
