@@ -976,7 +976,7 @@ function loadCheckout(price,title, custPartID, partID){
 		case 'nueraV2':
 			var formKey = document.getElementById('configurator').getAttribute('magento-key')
 
-			var dataURL = 'http://www.nueratrailerparts.com.etemps.info/checkout/cart/add/product/' + custPartID + '/form_key/' + formKey + '/';
+			var dataURL = 'http://www.nueratrailerparts.com/checkout/cart/add/product/' + custPartID + '/form_key/' + formKey + '/';
 
 			checkoutHTML += '<span class="price"><span>Price:</span>'+ price + '</span>';
 			checkoutHTML += '<form class="qty-block" action="' + dataURL + '" method="post" id="product_addtocart_form_' + custPartID +'">';
