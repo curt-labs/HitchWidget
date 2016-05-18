@@ -379,12 +379,12 @@ function loadConfigurator(){
 
 		// Check if we want to integrate with the customer's cart id's
 		if(jQuery('#configurator').attr('integrated')){
-			if(jQuery('#configurator').attr('integrated') === 'true'){
+			if((jQuery('#configurator').attr('integrated') === 'true') || (jQuery('#configurator').attr('integrated') === true)){
 				integrated = true;
 			}
 		}
 		if(jQuery('#configurator').data('integrated')){
-			if(jQuery('#configurator').data('integrated') === 'true'){
+			if((jQuery('#configurator').data('integrated') === 'true') || (jQuery('#configurator').data('integrated') === true)){
 				integrated = true;
 			}
 		}
