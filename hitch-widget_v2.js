@@ -923,7 +923,35 @@ function loadVehicleRecord(response){
 	}
 }
 
+function shopifySubmit(e) { //eslint-disable-line no-unused-vars
+	e.preventDefault();
+	var forms = jQuery(e.target).get();
+	if (!forms || forms.length === 0) {
+		return;
+	}
 
+	var form = forms[0];
+	var obj = {
+		id: parseInt(jQuery(form).find('input[name=id]').val(), 0),
+		quantity: parseInt(jQuery(form).find('input[name=qty]').val(), 0)
+	};
+
+	jQuery(form).find('.cart-error').remove();
+	jQuery(form).find('.cart-message').remove();
+	jQuery.ajax({
+		type: 'post',
+		url: jQuery(form).attr('action'),
+		dataType: 'json',
+		data: obj,
+		success: function() {
+			jQuery('.site-header__cart .site-header__cart-indicator').removeClass('hide');
+			jQuery(form).find('button').after('<span class="cart-message text-success">Item added to cart</span>');
+		},
+		error: function() {
+			jQuery(form).find('button').after('<span class="cart-error text-danger">Failed to add to cart</span>');
+		}
+	});
+}
 
 function loadCheckout(price,title, custPartID, partID){
 	var checkoutHTML = '';
@@ -1097,6 +1125,27 @@ function loadCheckout(price,title, custPartID, partID){
 			checkoutHTML += '<span class="price">'+price+'</span><br />';
 			checkoutHTML += '<a href="'+cart_link.replace('[part_id]',custPartID)+'" title="Add to Cart" class="form-button">Add to Cart</a><br />';
 			checkoutHTML += '</a><br />';
+			break;
+		case 'maddog':
+			checkoutHTML += '<form class="shopify" action="' + cart_link + '/cart/add.js" onSubmit="shopifySubmit(event)" method="post" class="form-inline">';
+			checkoutHTML += '<input type="hidden" name="id" data-value="' + custPartID + '">';
+			checkoutHTML += '<div class="row">';
+			checkoutHTML += '<div class="col-xs-4 col-sm-4 col-md-4 col-lg-4">';
+			checkoutHTML += '<p class="price accPrice">' + price + '</p>';
+			checkoutHTML += '<div class="form-group">';
+			checkoutHTML += '<label>Qty</label>';
+			checkoutHTML += '<input type="number" class="form-control" name="qty" value="1">';
+			checkoutHTML += '</div>';
+			checkoutHTML += '</div>';
+			checkoutHTML += '<div class="col-xs-8 col-sm-8 col-md-8 col-lg-8">';
+			checkoutHTML += '<div class="product-form__item product-form__item--submit">';
+			checkoutHTML += '<button type="submit" name="add" id="AddToCart" class="btn btn--full product-form__cart-submit">';
+			checkoutHTML += '<span id="AddToCartText">Add to Cart</span>';
+			checkoutHTML += '</button>';
+			checkoutHTML += '</div>';
+			checkoutHTML += '</div>';
+			checkoutHTML += '</div>';
+			checkoutHTML += '</form>';
 			break;
 		case 'custom':
 			if(cart_link.length > 0){
