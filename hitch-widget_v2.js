@@ -1130,7 +1130,7 @@ function loadCheckout(price,title, custPartID, partID){
 			checkoutHTML += '<form class="shopify" action="' + cart_link + '/cart/add.js" onSubmit="shopifySubmit(event)" method="post" class="form-inline">';
 			checkoutHTML += '<input type="hidden" name="id" data-value="' + custPartID + '">';
 			checkoutHTML += '<div class="row">';
-			checkoutHTML += '<div class="col-xs-4 col-sm-4 col-md-4 col-lg-4">';
+			checkoutHTML += '<div class="col-xs-8 col-sm-8 col-md-8 col-lg-8">';
 			checkoutHTML += '<p class="price accPrice">' + price + '</p>';
 			checkoutHTML += '<div class="form-group">';
 			checkoutHTML += '<label>Qty</label>';
