@@ -932,7 +932,7 @@ function shopifySubmit(e) { //eslint-disable-line no-unused-vars
 
 	var form = forms[0];
 	var obj = {
-		id: parseInt(jQuery(form).find('input[name=id]').val(), 0),
+		id: parseInt(jQuery(form).find('input[name=id]').data('value'), 0),
 		quantity: parseInt(jQuery(form).find('input[name=qty]').val(), 0)
 	};
 
