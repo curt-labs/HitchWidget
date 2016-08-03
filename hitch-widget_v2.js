@@ -938,9 +938,17 @@ function shopifySubmit(e) { //eslint-disable-line no-unused-vars
 
 	jQuery(form).find('.cart-error').remove();
 	jQuery(form).find('.cart-message').remove();
+
+	var url = jQuery(form).attr('action');
+	var scheme = url.split(':')[0];
+	var currentUrl = window.location.href;
+	var currentScheme = currentUrl.split(':', 1);
+	if (scheme !== currentScheme) {
+		url = currentScheme + ':' + url.split(':')[1];
+	}
 	jQuery.ajax({
 		type: 'post',
-		url: jQuery(form).attr('action'),
+		url: url,
 		dataType: 'json',
 		data: obj,
 		success: function() {
