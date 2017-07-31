@@ -733,13 +733,13 @@ function displayPart(part){
 								partHTML += "<span><strong>"+part.pClass+"</strong></span><br />";
 								partHTML += "<span><strong>Install Time:</strong> "+part.installTime+" minutes</span><br />";
 								partHTML += "<img src='https://labs.curtmfg.com/widget_v2/img/file_pdf.png' />";
-								
+
 								if(part.pClass == "Wiring"){
 									partHTML += "<a target='_blank' href='https://www.curtmfg.com/masterlibrary/"+part.partID+"/installsheet/CME_"+part.partID+"_INS.pdf'>";
 								}else{
 									partHTML += "<a target='_blank' href='https://www.curtmfg.com/masterlibrary/"+part.partID+"/installsheet/CM_"+part.partID+"_INS.pdf'>";
 								}
-								
+
 								partHTML += "Instruction Sheet "+part.partID;
 								partHTML += "</a>";
 								if(part.attributes.length > 0){
@@ -790,7 +790,7 @@ function displayPart(part){
 				partHTML += "<div class='hitchTab_container'>";
 						partHTML += "<div class='imageTab_content content' id='"+part.partID+"_content'>";
 								partHTML += "<img rel='facebox' src='https://www.curtmfg.com/masterlibrary/"+part.partID+"/images/"+part.partID+"_300x225_b.jpg' onerror='jQuery(this).remove()' />";
-								partHTML += "<img src='https://wwww.curtmfg.com/masterlibrary/"+part.partID+"/images/"+part.partID+"_300x225_c.jpg' onerror='jQuery(this).remove()' />";
+								partHTML += "<img src='https://www.curtmfg.com/masterlibrary/"+part.partID+"/images/"+part.partID+"_300x225_c.jpg' onerror='jQuery(this).remove()' />";
 								partHTML += "<img src='https://www.curtmfg.com/masterlibrary/"+part.partID+"/images/"+part.partID+"_300x225_d.jpg' onerror='jQuery(this).remove()' />";
 								partHTML += "<img src='https://www.curtmfg.com/masterlibrary/"+part.partID+"/images/"+part.partID+"_300x225_e.jpg' onerror='jQuery(this).remove()' />";
 						partHTML += "</div>";
