@@ -964,6 +964,18 @@ function shopifySubmit(e) { //eslint-disable-line no-unused-vars
 function loadCheckout(price,title, custPartID, partID){
 	var checkoutHTML = '';
 	switch(checkout){
+		case 'priceonly':
+			if(merchant_id > 0){
+				checkoutHTML += '<span class="price">'+price+'</span><br />';
+				checkoutHTML += '<div class="product">';
+				checkoutHTML += '<input type="hidden" class="product-title" value="'+title.replace('""',' inch').replace('"','')+'">';
+				checkoutHTML += '<input type="hidden" class="product-price" value="'+price+'">';
+				checkoutHTML += '<div class="googlecart-add-button" tabindex="0" role="button" title="Add to cart"></div>';
+				checkoutHTML += '</div>';
+			}
+			break;
+
+
 		case 'google':
 			if(merchant_id > 0){
 				checkoutHTML += '<span class="price">'+price+'</span><br />';
