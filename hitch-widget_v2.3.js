@@ -138,7 +138,7 @@ function initWidget(){
 				mount: mount,
 				dataType:'jsonp'
 			};
-			jQuery.get('https://api.curtmfg.com/v2/GetYear?callback=loadYears',get_data,function(years){},'jsonp');
+			jQuery.get('https://api.curtmfg.com/v2/GetYear?callback=loadYears',get_data,'jsonp');
 			if(mount == 'rear'){
 				jQuery('#searchStr').text('Rear Mount');
 			}else{
@@ -156,7 +156,7 @@ function initWidget(){
 				year: year,
 				dataType: 'jsonp'
 			};
-			jQuery.get('https://api.curtmfg.com/v2/GetMake?callback=loadMakes',get_data,function(makes){},'jsonp');
+			jQuery.get('https://api.curtmfg.com/v2/GetMake?callback=loadMakes',get_data,'jsonp');
 			var str = jQuery('#searchStr').text();
 			jQuery('#searchStr').text(str + ' ' + year);
 			jQuery('#clear').show();
@@ -172,7 +172,7 @@ function initWidget(){
 				make: make,
 				dataType:'JSONP'
 			};
-			jQuery.get('https://api.curtmfg.com/v2/GetModel?callback=loadModels',get_data,function(models){},'jsonp');
+			jQuery.get('https://api.curtmfg.com/v2/GetModel?callback=loadModels',get_data,'jsonp');
 			var str = jQuery('#searchStr').text();
 			jQuery('#searchStr').text(str + ' ' + make);
 		});
@@ -188,7 +188,7 @@ function initWidget(){
 				model: model,
 				dataType:'JSONP'
 			};
-			jQuery.get('https://api.curtmfg.com/v2/GetStyle?callback=loadCurtStyles',get_data,function(styles){},'jsonp');
+			jQuery.get('https://api.curtmfg.com/v2/GetStyle?callback=loadCurtStyles',get_data,'jsonp');
 			var str = jQuery('#searchStr').text();
 			jQuery('#searchStr').text(str + ' ' + model);
 		});
@@ -215,7 +215,7 @@ function initWidget(){
 					integrated: integrated,
 					cust_id: customer_id
 				};
-				jQuery.get('https://api.curtmfg.com/v2/GetParts?callback=loadParts',get_data,function(parts){},'jsonp');
+				jQuery.get('https://api.curtmfg.com/v2/GetParts?callback=loadParts',get_data,'jsonp');
 			}
 			return false;
 		});
@@ -485,7 +485,7 @@ function loadConfigurator(){
 				integrated: integrated,
 				dataType: 'jsonp'
 			};
-			jQuery.get('https://api.curtmfg.com/v2/GetParts?callback=loadParts',get_data,function(parts){},'jsonp');
+			jQuery.get('https://api.curtmfg.com/v2/GetParts?callback=loadParts',get_data,'jsonp');
 		}
 
 		// Now that everything is loaded, we can make the request to the CURT API to track the deployment
@@ -517,7 +517,7 @@ function showPart(partID){
 			integrated: integrated,
 			cust_id: customer_id
 		};
-		jQuery.get('https://api.curtmfg.com/v2/GetPart?callback=loadSingle',get_data,function(part_result){},'jsonp');
+		jQuery.get('https://api.curtmfg.com/v2/GetPart?callback=loadSingle',get_data,'jsonp');
 	}
 }
 
@@ -818,7 +818,7 @@ function GetAccessories(partID){
 		integrated: integrated,
 		cust_id: customer_id
 	};
-	jQuery.get('https://api.curtmfg.com/v2/GetRelatedParts?callback=loadAccessories',get_data,function(){},'jsonp');
+	jQuery.get('https://api.curtmfg.com/v2/GetRelatedParts?callback=loadAccessories',get_data,'jsonp');
 }
 
 function nueraFunction(value, data) {
@@ -891,7 +891,7 @@ function displayWiring(){
 		integrated: integrated,
 		cust_id: customer_id
 	};
-	jQuery.get('https://api.curtmfg.com/v2/GetConnector?callback=loadVehicleRecord',get_data,function(){},'jsonp');
+	jQuery.get('https://api.curtmfg.com/v2/GetConnector?callback=loadVehicleRecord',get_data,'jsonp');
 }
 
 // Handle the response from API for vehicle record
